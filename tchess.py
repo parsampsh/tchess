@@ -83,9 +83,9 @@ class Game:
                     elif j in (4, 7):
                         name = Piece.KING
                     elif j in (2, 5):
-                        name = Piece.KNIGHT
-                    elif j in (1, 6):
                         name = Piece.BISHOP
+                    elif j in (1, 6):
+                        name = Piece.KNIGHT
                     self.board[-1].append(
                         Piece(
                             name=name,
