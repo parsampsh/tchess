@@ -150,9 +150,18 @@ def run(args: list):
     if os.path.isfile(game_file_name):
         # if file exists, load the game from that
         # (means user wants to open a saved game)
-        tmp_f = open(game_file_name, 'rb')
-        game = pickle.load(tmp_f)
-        tmp_f.close()
+        try:
+            tmp_f = open(game_file_name, 'rb')
+            game = pickle.load(tmp_f)
+            tmp_f.close()
+
+            # validate the game object
+            if not isinstance(game, Game):
+                raise
+        except:
+            # file is corrupt
+            print('ERROR: file `' + game_file_name + '` is corrupt', file=sys.stderr)
+            sys.exit(1)
     else:
         game = Game()
 
