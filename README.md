@@ -125,6 +125,15 @@ Also you can don't use `to` keyword. for example:
 >>> mv 2.1 3.1
 ```
 
+Also you can see which pieces in the board are allowed to go to the which cells:
+
+```
+>>> s 2.2
+```
+
+The above command `s <cell-address>`, will show you the piece in the entered address can go to
+which cells (The allowed cells will be highlighted with `*`).
+
 ### Replaying a saved game
 If you played a game and it is saved, you can play that!
 

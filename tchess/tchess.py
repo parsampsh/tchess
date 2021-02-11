@@ -37,10 +37,109 @@ class Piece:
     def __init__(self, name: str, color: str):
         self.name = name
         self.color = color
-        self.id = id
 
     def __str__(self):
         return self.color + '-' + self.name
+
+    def allowed_moves(self, game, src, dst, return_locations=False):
+        """ Returns the allowed targets for move for this piece
+
+        Returned structure:
+        [
+            [x, y],
+            [x, y],
+            ...
+        ]
+        """
+        x = src[0]
+        y = src[1]
+        result = []
+        if self.name == 'pawn':
+            result = []
+            if self.color == 'white':
+                if x == 1:
+                    result = [
+                        [2, y],
+                        [3, y],
+                    ]
+                else:
+                    result = [
+                        [x+1, y],
+                    ]
+                a = 0
+                while a < len(result):
+                    tmp = result[a]
+                    try:
+                        if game.board[tmp[0]][tmp[1]] is not None:
+                            result.pop(a)
+                            a -= 1
+                    except:
+                        pass
+                    a += 1
+                try:
+                    if game.board[x+1][y+1] is not None:
+                        if game.board[x+1][y+1].color != self.color:
+                            result.append([x+1, y+1])
+                except:
+                    pass
+                try:
+                    if game.board[x+1][y-1] is not None:
+                        if game.board[x+1][y-1].color != self.color:
+                            result.append([x+1, y-1])
+                except:
+                    pass
+            else:
+                if x == 6:
+                    result = [
+                        [5, y],
+                        [4, y],
+                    ]
+                else:
+                    result = [
+                        [x-1, y],
+                    ]
+                a = 0
+                while a < len(result):
+                    tmp = result[a]
+                    try:
+                        if game.board[tmp[0]][tmp[1]] is not None:
+                            result.pop(a)
+                            a -= 1
+                    except:
+                        pass
+                    a += 1
+                try:
+                    if game.board[x-1][y+1] is not None:
+                        if game.board[x-1][y+1].color != self.color:
+                            result.append([x-1, y+1])
+                except:
+                    pass
+                try:
+                    if game.board[x-1][y-1] is not None:
+                        if game.board[x-1][y-1].color != self.color:
+                            result.append([x-1, y-1])
+                except:
+                    pass
+                a = 0
+                while a < len(result):
+                    tmp = result[a]
+                    try:
+                        if self.board[tmp[0]][tmp[1]] is not None:
+                            if tmp[1] == y:
+                                result.pop(a)
+                    except:
+                        pass
+                    a += 1
+        else:
+            if not return_locations:
+                return True
+        if return_locations:
+            return result
+        if dst in result:
+            return True
+        if self.name == Piece.PAWN:
+            return False
+        return False
 
 class Game:
     """ The running game handler """
@@ -57,6 +156,9 @@ class Game:
         # if we made backward IN-compatible changes on this class,
         # this number should be bumped.
         self.version = 1
+
+        # each cell location be in this list, will be highlighted in rendering
+        self.highlight_cells = []
 
         # initialize the board
         self.board = []
@@ -105,9 +207,11 @@ class Game:
 
     def move(self, src, dst):
         """ Moves src to dst """
-        # TODO : validate the move
         dst_p = copy.deepcopy(self.board[dst[0]][dst[1]])
         src_p = copy.deepcopy(self.board[src[0]][src[1]])
+
+        if not src_p.allowed_moves(self, src, dst):
+            return False, 'Error: Target location is not allowed. enter `s '+str(src[0]+1)+'.'+str(src[1]+1)+'` to see where you can go'
 
         if dst_p is not None:
             if dst_p.color == self.turn:
@@ -124,9 +228,36 @@ class Game:
         """ Gets a command as string and runs that on the game. Returns result message as string """
         cmd_parts = cmd.split()
 
+        self.highlight_cells = []
+
         invalid_msg = 'Invalid Command!'
 
         result_msg = 'Runed'
+
+        if len(cmd_parts) == 2:
+            # s <location>
+            if cmd_parts[0] == 's':
+                location = cmd_parts[1].replace('.', '-').split('-')
+                if len(location) == 2:
+                    try:
+                        location[0] = int(location[0])-1
+                        location[1] = int(location[1])-1
+
+                        valid_range = list(range(0, 8))
+                        if not (location[0] in valid_range and location[1] in valid_range):
+                            return 'Error: Location is out of range!'
+
+                        if self.board[location[0]][location[1]] is None:
+                            return 'Error: selected cell is empty!'
+
+                        allowed_moves = self.board[location[0]][location[1]].allowed_moves(self, (location[0], location[1]), (location[0], location[1]), return_locations=True)
+
+                        # show allowed moves
+                        self.highlight_cells = allowed_moves
+
+                        return '' if self.highlight_cells else 'This piece cannot move!'
+                    except:
+                        return 'Error: Invalid location!'
 
         if len(cmd_parts) == 3:
             if cmd_parts[0] in ('move', 'mv'):
@@ -193,6 +324,8 @@ class Game:
                     column_str = str(column)
                     ansi_color = Ansi.GREEN if column.color == 'white' else Ansi.RED
                     ansi_reset = Ansi.RESET
+                if [i, j] in self.highlight_cells:
+                    column_str += '*'
                 output += '| ' + ansi_color + column_str + ansi_reset + (' ' * (13-len(column_str)))
                 j += 1
             output += '|\n'
@@ -338,6 +471,8 @@ def run(args=[]):
             log_counter += 1
         else:
             command = input(ansi_color + game.turn + Ansi.RESET + ' Turn >>> ').strip().lower()
+
+        game.highlight_cells = []
 
         # check the empty command
         if command == '':

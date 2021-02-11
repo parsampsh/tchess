@@ -68,7 +68,7 @@ def test_command_runner_works():
     assert str_contains_all(game.run_command('mv 4.3 to 6-3').lower(), ['error', 'source', 'empty'])
     assert game.run_command('mv hi to 43543').lower().startswith('invalid')
     assert str_contains_all(game.run_command('mv 7.2 to 5.3').lower(), ['error', 'turn'])
-    assert str_contains_all(game.run_command('mv 2.3 to 2.4').lower(), ['error', 'kill', 'self'])
+    assert str_contains_all(game.run_command('mv 1.3 to 2.4').lower(), ['error', 'kill', 'self'])
 
     assert game.board[1][0] is not None
     assert game.board[3][0] is None
@@ -145,12 +145,50 @@ def test_game_file_system_works():
     os.remove('game.tchess')
     os.remove('other.tchess')
 
+def test_command_s_works():
+    """ Command `s` for show allowed cells to go working correct """
+    game = Game()
+    game.run_command('s 2.1')
+
+    assert game.highlight_cells == [[2, 0], [3, 0]]
+
+    game.run_command('mv 2.1 3.1')
+
+    game.run_command('s 3.1')
+    assert game.highlight_cells == [[3, 0]]
+
+def test_pawn_move_validation_works():
+    """ Pawn move validation working correct """
+    game = Game()
+
+    game.run_command('mv 2.1 3.1')
+    assert game.board[1][0] is None
+    assert game.board[2][0].name == Piece.PAWN
+
+    game.run_command('mv 7.1 5.1')
+    assert game.board[6][0] is None
+    assert game.board[4][0].name == Piece.PAWN
+
+    assert str_contains_all(game.run_command('mv 2.2 3.5').lower(), ['error'])
+    assert game.board[1][1] is not None
+    assert game.board[2][4] is None
+
+    game = Game()
+
+    game.run_command('mv 2.1 4.1')
+    game.run_command('mv 7.1 5.1')
+    assert str_contains_all(game.run_command('mv 4.1 5.1').lower(), ['error', 'location', 'allowed', 'not'])
+
+    assert str_contains_all(game.run_command('s 4.1').lower(), ['cannot', 'move'])
+
 TESTS = [
     test_default_state_is_valid,
     test_turn_changer_works,
     test_command_runner_works,
     test_log_list_is_working,
     test_game_file_system_works,
+    test_command_s_works,
+    test_pawn_move_validation_works,
 ]
 
 # running the tests
