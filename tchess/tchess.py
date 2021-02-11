@@ -142,11 +142,8 @@ DESCRIPTION
     This software can handle saving the game in a file
     Then you can continue your game later by loading that file
 
-EXAMPLE
-    $'''+sys.argv[0]+''' my-game.tchess 
-
 SYNOPSIS
-    '''+sys.argv[0]+''' [options...] [?game-file-name]
+    $ '''+sys.argv[0]+''' [options...] [?game-file-name]
 
 OPTIONS
     --help: shows this help
