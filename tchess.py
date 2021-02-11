@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
+""" Play the Chess in the terminal """
+
 import pickle
 import sys
 import os
 
-""" Play the Chess in the terminal """
-
 class Ansi:
+    """ The terminal ansi chars """
+
     GREEN = '\033[32m'
     RED = '\033[31m'
     RESET = '\033[0m'
@@ -59,7 +61,7 @@ class Game:
             self.board.append([])
             for j in range(8):
                 # handle default pieces location
-                if i == 1 or i == 6:
+                if i in (1, 6):
                     self.board[-1].append(
                         Piece(
                             name=Piece.PAWN,
@@ -137,7 +139,10 @@ def run(args: list):
     # check the terminal size
     terminal_width = os.get_terminal_size().columns
     if terminal_width < len(Game.ROW_SEPARATOR):
-        print('ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)) + '.', file=sys.stderr)
+        print(
+            'ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)) + '.',
+            file=sys.stderr
+        )
         sys.exit(1)
 
     game_file_name = 'game.tchess'
@@ -201,7 +206,9 @@ def run(args: list):
         if command in ['exit', 'quit', 'q']:
             game_file_name = os.path.abspath(game_file_name)
             print('Your game was saved in file `' + game_file_name + '`.')
-            print('To continue this game again, run `' + sys.argv[0] + ' ' + repr(game_file_name) + '`.')
+            print(
+                'To continue this game again, run `' + sys.argv[0] + ' '+repr(game_file_name)+'`.'
+            )
             print('Good bye!')
             sys.exit()
 
