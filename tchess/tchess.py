@@ -106,8 +106,8 @@ class Game:
         """
         self.turn = 'black' if self.turn == 'white' else 'white'
 
-    def run_command(self, cmd: str):
-        """ Gets a command as string and runs that on the game """
+    def run_command(self, cmd: str) -> str:
+        """ Gets a command as string and runs that on the game. Returns result message as string """
         # TODO : run the command
 
         # add command to the log
