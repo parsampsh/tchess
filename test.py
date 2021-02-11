@@ -70,15 +70,32 @@ def test_command_runner_works():
     assert game.board[3][0] is not None
     assert game.board[3][0].name == Piece.PAWN
 
+def test_log_list_is_working():
+    """ Logs will be saved """
+    game = Game()
+
+    commands = [
+        'move 2.1 to 3.1',
+        'move 7.1 to 5.1',
+    ]
+
+    game.run_command('gfdgfd')
+
+    for command in commands:
+        game.run_command(command)
+
+    assert game.logs == commands
 
 def test_game_file_system_works():
     """ Game file system working correct """
+    # TODO : write this test
     pass
 
 TESTS = [
     test_default_state_is_valid,
     test_turn_changer_works,
     test_command_runner_works,
+    test_log_list_is_working,
     test_game_file_system_works,
 ]
 
