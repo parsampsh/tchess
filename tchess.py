@@ -140,16 +140,16 @@ def run(args: list):
         print('ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)) + '.', file=sys.stderr)
         sys.exit(1)
 
-    # handle `--no-ansi` option
-    if '--no-ansi' in args:
-        args.remove('--no-ansi')
-        Ansi.disable()
-
     game_file_name = 'game.tchess'
 
     # parse the arguments
     options = [arg for arg in args if arg.startswith('-')]
     arguments = [arg for arg in args if not arg.startswith('-')]
+
+    # handle `--no-ansi` option
+    if '--no-ansi' in options:
+        options.remove('--no-ansi')
+        Ansi.disable()
 
     if len(arguments) > 0:
         game_file_name = arguments[0]
