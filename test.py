@@ -37,8 +37,31 @@ def test_default_state_is_valid():
         assert game.board[index][3].name == Piece.KING
         assert game.board[index][4].color == color
 
+def test_turn_changer_works():
+    """ Game turn can be changed correctly """
+    game = Game()
+    assert game.turn == 'white'
+    game.change_turn()
+    assert game.turn == 'black'
+    game.change_turn()
+    assert game.turn == 'white'
+
+def test_command_runner_works():
+    """ Game command runner works """
+    game = Game()
+
+    assert 'invalid' in game.run_command('fdfgdd').lower()
+    #assert game.run_command('mov ') in result.lower()
+
+def test_game_file_system_works():
+    """ Game file system working correct """
+    pass
+
 TESTS = [
     test_default_state_is_valid,
+    test_turn_changer_works,
+    test_command_runner_works,
+    test_game_file_system_works,
 ]
 
 # running the tests
