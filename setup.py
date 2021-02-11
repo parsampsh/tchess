@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import setuptools
 
 readme_f = open('README.md', 'r')
