@@ -1,3 +1,5 @@
+""" Runs the tchess for `python -m tchess` """
+
 import sys
 import tchess
 
