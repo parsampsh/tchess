@@ -5,6 +5,7 @@
 import pickle
 import sys
 import os
+import copy
 
 class Ansi:
     """ The terminal ansi chars """
@@ -32,9 +33,8 @@ class Piece:
     BISHOP = 'bishop'
     ROCK = 'rock'
 
-    def __init__(self, name: str, color: str, id: int, game):
+    def __init__(self, name: str, color: str, id: int):
         self.name = name
-        self.game = game
         self.color = color
         self.id = id
 
@@ -69,7 +69,6 @@ class Game:
                             name=Piece.PAWN,
                             color=('white' if i == 1 else 'black'),
                             id=int(str(i) + str(j)),
-                            game=self
                         )
                     )
                 elif i in (0, 7):
@@ -93,7 +92,6 @@ class Game:
                             name=name,
                             color=('white' if i == 0 else 'black'),
                             id=int(str(i) + str(j)),
-                            game=self
                         )
                     )
                 else:
@@ -106,9 +104,62 @@ class Game:
         """
         self.turn = 'black' if self.turn == 'white' else 'white'
 
+    def move(self, src, dst):
+        """ Moves src to dst """
+        # TODO : validate the move
+        #dst_p = copy.deepcopy(self.board[dst[0]][dst[1]])
+        src_p = copy.deepcopy(self.board[src[0]][src[1]])
+
+        self.board[src[0]][src[1]] = None
+
+        self.board[dst[0]][dst[1]] = src_p
+
+        return True, ''
+
     def run_command(self, cmd: str) -> str:
         """ Gets a command as string and runs that on the game. Returns result message as string """
-        # TODO : run the command
+        cmd_parts = cmd.split()
+
+        invalid_msg = 'Invalid Command!'
+
+        result_msg = 'Runed'
+
+        if len(cmd_parts) == 4:
+            # the move operation
+            if cmd_parts[0] in ('move', 'mv') and cmd_parts[2] == 'to':
+                src = cmd_parts[1].replace('.', '-').split('-')
+                dst = cmd_parts[3].replace('.', '-').split('-')
+                if len(src) == 2 and len(dst) == 2:
+                    try:
+                        src[0] = int(src[0])-1
+                        src[1] = int(src[1])-1
+                        dst[0] = int(dst[0])-1
+                        dst[1] = int(dst[1])-1
+
+                        valid_range = list(range(0, 8))
+                        if not (src[0] in valid_range and src[1] in valid_range and dst[0] in valid_range and dst[1] in valid_range):
+                            return 'Error: Locations are out of range!'
+                    except:
+                        return 'Error: Invalid locations!'
+                    result_msg = cmd_parts[1] + ' Moved to ' + cmd_parts[3]
+                else:
+                    return invalid_msg
+
+                if self.board[src[0]][src[1]] is not None:
+                    pass
+                else:
+                    return 'Error: source location is empty cell!'
+                if src == dst:
+                    return 'Error: source and target locations are not different!'
+                if self.board[src[0]][src[1]].color != self.turn:
+                    return 'Error: its ' + self.turn + ' turn, you should move ' + self.turn + ' pieces!'
+                result = self.move(src, dst)
+                if not result[0]:
+                    return result[1]
+            else:
+                return invalid_msg
+        else:
+            return invalid_msg
 
         # add command to the log
         self.logs.append(cmd)
@@ -116,13 +167,13 @@ class Game:
         # change the turn
         self.change_turn()
 
-        return 'Runed!'
+        return result_msg
 
     def render(self) -> str:
         """ Renders the board to show in the terminal """
         output = ''
         i = 0
-        for row in list(reversed(self.board)):
+        for row in self.board:
             output += self.ROW_SEPARATOR
             j = 0
             for column in row:
