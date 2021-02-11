@@ -2,4 +2,4 @@
 
 from .tchess import run, Game, Piece, load_game_from_file
 
-VERSION = '0.1'
+VERSION = '0.0.4'

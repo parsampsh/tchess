@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import setuptools
+from tchess import VERSION
 
 readme_f = open('README.md', 'r')
 long_description = readme_f.read()
@@ -8,7 +9,7 @@ readme_f.close()
 
 setuptools.setup(
     name="tchess",
-    version="0.0.3",
+    version=VERSION,
     author="parsa shahmaleki",
     author_email="parsampsh@gmail.com",
     description="The Chess game in terminal",
