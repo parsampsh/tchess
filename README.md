@@ -29,3 +29,6 @@ $ tchess my-old-game.bin
 (The `.bin` extension is a example, you can name it whatever you want).
 
 ## Basics
+
+### More cli options
+- `--no-ansi`: disables the Ansi color chars

@@ -6,6 +6,18 @@ import os
 
 """ Play the Chess in the terminal """
 
+class Ansi:
+    GREEN = '\033[32m'
+    RED = '\033[31m'
+    RESET = '\033[0m'
+
+    @staticmethod
+    def disable():
+        """ Disables the ansi chars """
+        Ansi.GREEN = ''
+        Ansi.RED = ''
+        Ansi.RESET = ''
+
 class Piece:
     """ Each piece in the chess board """
 
@@ -101,9 +113,13 @@ class Game:
             for column in row:
                 if column is None:
                     column_str = ' ' * 13
+                    ansi_color = ''
+                    ansi_reset = ''
                 else:
                     column_str = str(column)
-                output += '| ' + column_str + (' ' * (13-len(column_str)))
+                    ansi_color = Ansi.GREEN if column.color == 'white' else Ansi.RED
+                    ansi_reset = Ansi.RESET
+                output += '| ' + ansi_color + column_str + ansi_reset + (' ' * (13-len(column_str)))
             output += '|\n'
         output += self.ROW_SEPARATOR
         return output
@@ -116,6 +132,11 @@ def run(args: list):
     if terminal_width < len(Game.ROW_SEPARATOR):
         print('ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)) + '.', file=sys.stderr)
         sys.exit(1)
+
+    # handle `--no-ansi` option
+    if '--no-ansi' in args:
+        args.remove('--no-ansi')
+        Ansi.disable()
 
     game_file_name = 'game.tchess'
 
@@ -145,7 +166,11 @@ def run(args: list):
         print(game.render())
 
         # get command from user and run it
-        command = input(game.turn + ' Turn >>> ').strip().lower()
+        tmp_turn = game.turn
+        ansi_color = Ansi.RED if tmp_turn == 'black' else Ansi.GREEN
+        # fix whitespace
+        print(' ' * len(Game.ROW_SEPARATOR), end='\r')
+        command = input(ansi_color + game.turn + Ansi.RESET + ' Turn >>> ').strip().lower()
 
         # check the empty command
         if command == '':
