@@ -116,6 +116,8 @@ class Game:
         # change the turn
         self.change_turn()
 
+        return 'Runed!'
+
     def render(self) -> str:
         """ Renders the board to show in the terminal """
         output = ''
@@ -214,6 +216,9 @@ def run(args=[]):
     else:
         game = Game()
 
+    # last result of runed command
+    last_message = ''
+
     while True:
         # render the game board on the terminal
         print('\033[H', end='')
@@ -227,11 +232,14 @@ def run(args=[]):
         tmp_turn = game.turn
         ansi_color = Ansi.RED if tmp_turn == 'black' else Ansi.GREEN
         # fix whitespace
+        print(last_message, end='')
+        print(' ' * (len(Game.ROW_SEPARATOR)-len(last_message)))
         print(' ' * len(Game.ROW_SEPARATOR), end='\r')
         command = input(ansi_color + game.turn + Ansi.RESET + ' Turn >>> ').strip().lower()
 
         # check the empty command
         if command == '':
+            last_message = ''
             continue
 
         # check the exit command
@@ -245,7 +253,7 @@ def run(args=[]):
             sys.exit()
 
         # run the command on the game to make effects
-        game.run_command(command)
+        last_message = game.run_command(command)
 
         # save the game
         # open a file
