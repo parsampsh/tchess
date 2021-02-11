@@ -34,7 +34,7 @@ class Piece:
     BISHOP = 'bishop'
     ROCK = 'rock'
 
-    def __init__(self, name: str, color: str, id: int):
+    def __init__(self, name: str, color: str):
         self.name = name
         self.color = color
         self.id = id
@@ -69,7 +69,6 @@ class Game:
                         Piece(
                             name=Piece.PAWN,
                             color=('white' if i == 1 else 'black'),
-                            id=int(str(i) + str(j)),
                         )
                     )
                 elif i in (0, 7):
@@ -92,7 +91,6 @@ class Game:
                         Piece(
                             name=name,
                             color=('white' if i == 0 else 'black'),
-                            id=int(str(i) + str(j)),
                         )
                     )
                 else:
