@@ -1,4 +1,4 @@
-# TChess : Play the Chess in the terminal
+# TChess - Play the Chess in the terminal
 **TChess** is a simple chess game in terminal.
 With this program, you can play chess in terminal.
 
