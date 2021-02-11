@@ -46,6 +46,13 @@ class Game:
         self.turn = 'white'
         self.logs = []
 
+        # this item is used to validate saved games versions
+        # if we load a file that created with old version of the game,
+        # we can check it using this property
+        # if we made backward IN-compatible changes on this class,
+        # this number should be bumped.
+        self.version = 1
+
         # initialize the board
         self.board = []
         for i in range(8):
@@ -157,6 +164,11 @@ def run(args: list):
 
             # validate the game object
             if not isinstance(game, Game):
+                raise
+
+            # check the version
+            if game.version != Game().version:
+                print('ERROR: file `' + game_file_name + '` is created with OLD/NEW version of tchess and cannot be loaded', file=sys.stderr)
                 raise
         except:
             # file is corrupt
