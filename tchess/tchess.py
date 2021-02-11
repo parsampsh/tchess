@@ -111,9 +111,10 @@ class Game:
         dst_p = copy.deepcopy(self.board[dst[0]][dst[1]])
         src_p = copy.deepcopy(self.board[src[0]][src[1]])
 
-        if dst_p.color == self.turn:
-            # killing self!
-            return False, 'Error: You cannot kill your self!'
+        if dst_p is not None:
+            if dst_p.color == self.turn:
+                # killing self!
+                return False, 'Error: You cannot kill your self!'
 
         self.board[src[0]][src[1]] = None
 
@@ -223,15 +224,6 @@ AUTHOR
 def run(args=[]):
     """ The main cli entry point """
 
-    # check the terminal size
-    terminal_width = os.get_terminal_size().columns
-    if terminal_width < len(Game.ROW_SEPARATOR):
-        print(
-            'ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)) + '.',
-            file=sys.stderr
-        )
-        sys.exit(1)
-
     game_file_name = 'game.tchess'
 
     # parse the arguments
@@ -267,6 +259,15 @@ def run(args=[]):
             except:
                 pass
             break
+
+    # check the terminal size
+    terminal_width = os.get_terminal_size().columns
+    if terminal_width < len(Game.ROW_SEPARATOR):
+        print(
+            'ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)) + '.',
+            file=sys.stderr
+        )
+        sys.exit(1)
 
     if len(arguments) > 0:
         game_file_name = arguments[0]
