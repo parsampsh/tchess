@@ -12,6 +12,7 @@ class Ansi:
     GREEN = '\033[32m'
     RED = '\033[31m'
     RESET = '\033[0m'
+    GRAY = '\033[37m'
 
     @staticmethod
     def disable():
@@ -19,6 +20,7 @@ class Ansi:
         Ansi.GREEN = ''
         Ansi.RED = ''
         Ansi.RESET = ''
+        Ansi.GRAY = ''
 
 class Piece:
     """ Each piece in the chess board """
@@ -117,19 +119,23 @@ class Game:
     def render(self) -> str:
         """ Renders the board to show in the terminal """
         output = ''
+        i = 0
         for row in list(reversed(self.board)):
             output += self.ROW_SEPARATOR
+            j = 0
             for column in row:
                 if column is None:
-                    column_str = ' ' * 13
-                    ansi_color = ''
-                    ansi_reset = ''
+                    column_str = ' ' + str(i+1) + '-' + str(j+1)
+                    ansi_color = Ansi.GRAY
+                    ansi_reset = Ansi.RESET
                 else:
                     column_str = str(column)
                     ansi_color = Ansi.GREEN if column.color == 'white' else Ansi.RED
                     ansi_reset = Ansi.RESET
                 output += '| ' + ansi_color + column_str + ansi_reset + (' ' * (13-len(column_str)))
+                j += 1
             output += '|\n'
+            i += 1
         output += self.ROW_SEPARATOR
         return output
 
