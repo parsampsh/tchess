@@ -8,7 +8,7 @@ readme_f.close()
 
 setuptools.setup(
     name="tchess",
-    version="0.0.2",
+    version="0.0.3",
     author="parsa shahmaleki",
     author_email="parsampsh@gmail.com",
     description="The Chess game in terminal",
