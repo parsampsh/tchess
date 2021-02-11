@@ -196,7 +196,7 @@ def run():
     """ Run the tests """
     i = 1
     for test in TESTS:
-        print(f'[{i}/{len(TESTS)}] ' + test.__doc__ + '...', end=' ')
+        print(f'[{i}/{len(TESTS)}] ' + test.__doc__.strip().splitlines()[0] + '...', end=' ')
         test()
         print('PASS')
         i += 1
