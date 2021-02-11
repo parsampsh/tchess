@@ -2,7 +2,14 @@
 
 """ Runs the tchess tests """
 
-from tchess.tchess import Game, Piece
+import os
+import pickle
+import subprocess
+from tchess import Game, Piece, load_game_from_file
+
+PY_EXE = 'python3'
+if os.name == 'nt':
+    PY_EXE = 'python'
 
 def str_contains_all(string, items):
     """ Gets a string and a list of string and checks all of list items are in string """
@@ -88,8 +95,49 @@ def test_log_list_is_working():
 
 def test_game_file_system_works():
     """ Game file system working correct """
-    # TODO : write this test
-    pass
+    if os.path.exists('game.tchess'):
+        os.remove('game.tchess')
+    if os.path.exists('other.tchess'):
+        os.remove('other.tchess')
+
+    proc = subprocess.Popen(
+        PY_EXE + ' tchess', shell=True,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE
+    )
+    proc.communicate(input='mv 2.1 to 3.1\nexit'.encode())
+
+    assert os.path.isfile('game.tchess')
+    saved_game = load_game_from_file('game.tchess')
+    assert isinstance(saved_game, Game)
+    assert saved_game.version == Game().version
+    assert saved_game.logs == ['mv 2.1 to 3.1']
+
+    proc = subprocess.Popen(
+        PY_EXE + ' tchess other.tchess', shell=True,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE
+    )
+    proc.communicate(input='mv 2.2 to 3.2\nexit'.encode())
+
+    assert os.path.isfile('other.tchess')
+    saved_game2 = load_game_from_file('other.tchess')
+    assert isinstance(saved_game2, Game)
+    assert saved_game2.version == Game().version
+    assert saved_game2.logs == ['mv 2.2 to 3.2']
+
+    proc = subprocess.Popen(
+        PY_EXE + ' tchess other.tchess', shell=True,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE
+    )
+    proc.communicate(input='mv 7.3 to 6.3\nexit'.encode())
+
+    assert os.path.isfile('other.tchess')
+    saved_game2 = load_game_from_file('other.tchess')
+    assert isinstance(saved_game2, Game)
+    assert saved_game2.version == Game().version
+    assert saved_game2.logs == ['mv 2.2 to 3.2', 'mv 7.3 to 6.3']
+
+    os.remove('game.tchess')
+    os.remove('other.tchess')
 
 TESTS = [
     test_default_state_is_valid,

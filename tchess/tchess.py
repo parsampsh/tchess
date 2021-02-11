@@ -219,6 +219,13 @@ AUTHOR
     And Licensed under MIT
 ''')
 
+def load_game_from_file(path: str):
+    """ Loads the game object from a file """
+    tmp_f = open(path, 'rb')
+    game = pickle.load(tmp_f)
+    tmp_f.close()
+    return game
+
 def run(args=[]):
     """ The main cli entry point """
 
@@ -259,7 +266,10 @@ def run(args=[]):
             break
 
     # check the terminal size
-    terminal_width = os.get_terminal_size().columns
+    try:
+        terminal_width = os.get_terminal_size().columns
+    except:
+        terminal_width = len(Game.ROW_SEPARATOR)
     if terminal_width < len(Game.ROW_SEPARATOR):
         print(
             'ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)) + '.',
@@ -274,9 +284,7 @@ def run(args=[]):
         # if file exists, load the game from that
         # (means user wants to open a saved game)
         try:
-            tmp_f = open(game_file_name, 'rb')
-            game = pickle.load(tmp_f)
-            tmp_f.close()
+            game = load_game_from_file(game_file_name)
 
             # validate the game object
             if not isinstance(game, Game):
