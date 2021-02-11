@@ -56,6 +56,8 @@ $ tchess [options...] [?game-file-name]
 - `--help`: shows the help
 - `--no-ansi`: disables the Ansi color chars
 
+### Game flow
+
 when you run the game, you see something like this:
 
 ```
@@ -91,14 +93,14 @@ Also name of Pieces is `<team>-<type>`. for example `black-queen`.
 The location of cells is accessible with this pattern: `<row>-<column>` or `<row>.<column>`.
 For example `1-1` or `6.4`.
 
-#### `exit`
+### `exit`
 command exit, exits the program:
 
 ```
 >>> exit
 ```
 
-#### Moving the pieces
+### Moving the pieces
 For moving pieces, you should enter this command:
 
 ```bash
@@ -116,3 +118,23 @@ Also you can use `mv` keyword instead of `move`:
 ```bash
 >>> mv a to b
 ``` 
+
+### Playing a saved game
+If you played a game and it is saved, you can play that!
+
+You should use option `--play`:
+
+```bash
+$ tchess --play my-saved-game.file
+```
+
+Then you can see your game is playing!
+
+Also you can set frame speed of playing using `--play-speed` option:
+
+```bash
+$ tchess --play my-saved-game.file --play-speed=3 # means 3 seound
+$ tchess --play my-saved-game.file --play-speed=0.5
+```
+
+(sort of options is not important).

@@ -6,6 +6,7 @@ import pickle
 import sys
 import os
 import copy
+import time
 
 class Ansi:
     """ The terminal ansi chars """
@@ -207,9 +208,12 @@ SYNOPSIS
 OPTIONS
     --help: shows this help
     --no-ansi: disable terminal ansi colors
-    
-EXAMPLE
-    $'''+sys.argv[0]+''' my-game.tchess --no-ansi 
+    --play: play the saved game
+    --play-speed: delay between play frame (for example `3`(secound) or `0.5`)
+
+AUTHOR
+    This software is created by Parsa Shahmaleki <parsampsh@gmail.com>
+    And Licensed under MIT
 ''')
 
 def run(args=[]):
@@ -241,6 +245,25 @@ def run(args=[]):
         options.remove('--no-ansi')
         Ansi.disable()
 
+    # handle `--play` option
+    is_play = False
+    log_counter = 0
+    if '--play' in options:
+        options.remove('--play')
+        is_play = True
+
+    # handle `--play-speed` option
+    play_speed = 1
+    for option in options:
+        if option.startswith('--play-speed='):
+            options.remove(option)
+            value = option.split('=', 1)[-1]
+            try:
+                play_speed = float(value)
+            except:
+                pass
+            break
+
     if len(arguments) > 0:
         game_file_name = arguments[0]
 
@@ -267,6 +290,10 @@ def run(args=[]):
     else:
         game = Game()
 
+    game_logs = game.logs
+    if is_play:
+        game = Game()
+
     # last result of runed command
     last_message = ''
 
@@ -286,7 +313,16 @@ def run(args=[]):
         print(last_message, end='')
         print(' ' * (len(Game.ROW_SEPARATOR)-len(last_message)))
         print(' ' * len(Game.ROW_SEPARATOR), end='\r')
-        command = input(ansi_color + game.turn + Ansi.RESET + ' Turn >>> ').strip().lower()
+        if is_play:
+            time.sleep(play_speed)
+            try:
+                command = game_logs[log_counter]
+            except:
+                print('Finished.')
+                sys.exit()
+            log_counter += 1
+        else:
+            command = input(ansi_color + game.turn + Ansi.RESET + ' Turn >>> ').strip().lower()
 
         # check the empty command
         if command == '':
