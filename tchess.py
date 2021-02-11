@@ -110,6 +110,13 @@ class Game:
 
 def run(args: list):
     """ The main cli entry point """
+
+    # check the terminal size
+    terminal_width = os.get_terminal_size().columns
+    if terminal_width < len(Game.ROW_SEPARATOR):
+        print('ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)) + '.', file=sys.stderr)
+        sys.exit(1)
+
     game_file_name = 'game.tchess'
 
     # parse the arguments
@@ -134,7 +141,7 @@ def run(args: list):
         title = '*** Welcome to the TChess! ***'
         print(title, end='')
         print(' ' * (len(Game.ROW_SEPARATOR) - len(title)))
-        print()
+        print(' ' * len(Game.ROW_SEPARATOR))
         print(game.render())
 
         # get command from user and run it
