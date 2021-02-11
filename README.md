@@ -138,3 +138,26 @@ $ tchess --play my-saved-game.file --play-speed=0.5
 ```
 
 (sort of options is not important).
+
+## Development
+If you are developing this software, you can run the tests using `test.py`:
+
+```bash
+$ python3 test.py
+# OR
+$ ./test.py
+```
+
+For adding test, write a function in `test.py` and add the function to the `TESTS` list in `test.py`:
+
+```python
+def test_my_test_func():
+    """ A Caption for my test """
+    assert 1 == 1
+
+TESTS = [
+    # ...
+    test_my_test_func,
+    # ...
+]
+```
