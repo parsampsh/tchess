@@ -31,4 +31,5 @@ $ tchess my-old-game.bin
 ## Basics
 
 ### More cli options
+- `--help`: shows the help
 - `--no-ansi`: disables the Ansi color chars
