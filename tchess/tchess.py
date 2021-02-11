@@ -211,8 +211,8 @@ SYNOPSIS
 OPTIONS
     --help: shows this help
     --no-ansi: disable terminal ansi colors
-    --play: play the saved game
-    --play-speed: delay between play frame (for example `3`(secound) or `0.5`)
+    --replay: play the saved game
+    --replay-speed: delay between play frame (for example `3`(secound) or `0.5`)
 
 AUTHOR
     This software is created by Parsa Shahmaleki <parsampsh@gmail.com>
@@ -246,17 +246,17 @@ def run(args=[]):
         options.remove('--no-ansi')
         Ansi.disable()
 
-    # handle `--play` option
+    # handle `--replay` option
     is_play = False
     log_counter = 0
-    if '--play' in options:
-        options.remove('--play')
+    if '--replay' in options:
+        options.remove('--replay')
         is_play = True
 
-    # handle `--play-speed` option
+    # handle `--replay-speed` option
     play_speed = 1
     for option in options:
-        if option.startswith('--play-speed='):
+        if option.startswith('--replay-speed='):
             options.remove(option)
             value = option.split('=', 1)[-1]
             try:

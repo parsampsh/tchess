@@ -119,22 +119,22 @@ Also you can use `mv` keyword instead of `move`:
 >>> mv a to b
 ``` 
 
-### Playing a saved game
+### Replaying a saved game
 If you played a game and it is saved, you can play that!
 
-You should use option `--play`:
+You should use option `--replay`:
 
 ```bash
-$ tchess --play my-saved-game.file
+$ tchess --replay my-saved-game.file
 ```
 
-Then you can see your game is playing!
+Then you can see your game is Replaying!
 
-Also you can set frame speed of playing using `--play-speed` option:
+Also you can set frame speed of Replaying using `--replay-speed` option:
 
 ```bash
-$ tchess --play my-saved-game.file --play-speed=3 # means 3 seound
-$ tchess --play my-saved-game.file --play-speed=0.5
+$ tchess --replay my-saved-game.file --replay-speed=3 # means 3 seound
+$ tchess --replay my-saved-game.file --replay-speed=0.5
 ```
 
 (sort of options is not important).

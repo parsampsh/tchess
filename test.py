@@ -136,6 +136,12 @@ def test_game_file_system_works():
     assert saved_game2.version == Game().version
     assert saved_game2.logs == ['mv 2.2 to 3.2', 'mv 7.3 to 6.3']
 
+    proc = subprocess.Popen(
+        PY_EXE + ' tchess --replay --replay-speed=0.1 other.tchess', shell=True,
+        stdout=subprocess.PIPE
+    )
+    proc.communicate()
+
     os.remove('game.tchess')
     os.remove('other.tchess')
 
