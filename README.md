@@ -103,21 +103,27 @@ command exit, exits the program:
 ### Moving the pieces
 For moving pieces, you should enter this command:
 
-```bash
+```
 >>> move <src> to <dst>
 ```
 
 for example:
 
-```bash
+```
 >>> move 2.1 to 4.1
 ```
 
 Also you can use `mv` keyword instead of `move`:
 
-```bash
+```
 >>> mv a to b
 ``` 
+
+Also you can don't use `to` keyword. for example:
+
+```
+>>> mv 2.1 3.1
+```
 
 ### Replaying a saved game
 If you played a game and it is saved, you can play that!

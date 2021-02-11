@@ -128,6 +128,10 @@ class Game:
 
         result_msg = 'Runed'
 
+        if len(cmd_parts) == 3:
+            if cmd_parts[0] in ('move', 'mv'):
+                cmd_parts.insert(2, 'to')
+
         if len(cmd_parts) == 4:
             # the move operation
             if cmd_parts[0] in ('move', 'mv') and cmd_parts[2] == 'to':

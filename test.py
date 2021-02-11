@@ -83,7 +83,7 @@ def test_log_list_is_working():
 
     commands = [
         'move 2.1 to 3.1',
-        'move 7.1 to 5.1',
+        'move 7.1 5.1',
     ]
 
     game.run_command('gfdgfd')
