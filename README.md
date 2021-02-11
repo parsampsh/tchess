@@ -5,7 +5,7 @@ With this program, you can play chess in terminal.
 This software is licensed under [MIT](/LICENSE).
 
 ## Get Started
-To run a game:
+To start a game:
 
 ```bash
 $ tchess

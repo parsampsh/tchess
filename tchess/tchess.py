@@ -156,7 +156,7 @@ EXAMPLE
     $'''+sys.argv[0]+''' my-game.tchess --no-ansi 
 ''')
 
-def run(args: list):
+def run(args=[]):
     """ The main cli entry point """
 
     # check the terminal size
