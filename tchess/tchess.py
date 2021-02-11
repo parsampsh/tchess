@@ -108,8 +108,12 @@ class Game:
     def move(self, src, dst):
         """ Moves src to dst """
         # TODO : validate the move
-        #dst_p = copy.deepcopy(self.board[dst[0]][dst[1]])
+        dst_p = copy.deepcopy(self.board[dst[0]][dst[1]])
         src_p = copy.deepcopy(self.board[src[0]][src[1]])
+
+        if dst_p.color == self.turn:
+            # killing self!
+            return False, 'Error: You cannot kill your self!'
 
         self.board[src[0]][src[1]] = None
 
