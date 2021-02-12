@@ -105,6 +105,9 @@ class Game:
         # each cell location be in this list, will be highlighted in rendering
         self.highlight_cells = []
 
+        # this item determines the selected piece using `s` command
+        self.selected_cell = None
+
         # initialize the board
         self.board = []
         for i in range(8):
@@ -174,6 +177,7 @@ class Game:
         cmd_parts = cmd.split()
 
         self.highlight_cells = []
+        self.selected_cell = None
 
         invalid_msg = 'Invalid Command!'
 
@@ -198,7 +202,8 @@ class Game:
                         allowed_moves = self.board[location[0]][location[1]].allowed_moves(self, (location[0], location[1]), (location[0], location[1]), return_locations=True)
 
                         # show allowed moves
-                        self.highlight_cells = [location, *allowed_moves]
+                        self.highlight_cells = allowed_moves
+                        self.selected_cell = location
 
                         return '' if self.highlight_cells else 'This piece cannot move!'
                     except:
@@ -269,7 +274,7 @@ class Game:
                     column_str = str(column)
                     ansi_color = Ansi.CYAN if column.color == 'white' else Ansi.RED
                     ansi_reset = Ansi.RESET
-                if [i, j] in self.highlight_cells:
+                if [i, j] in self.highlight_cells or self.selected_cell == [i, j]:
                     column_str = '*' + column_str.lstrip() + '*'
                 output += '| ' + ansi_color + column_str + ansi_reset + (' ' * (self.CELL_WIDTH-len(column_str)))
                 j += 1
@@ -424,6 +429,7 @@ def run(args=[]):
             command = input(ansi_color + game.turn + Ansi.RESET + ' Turn >>> ').strip().lower()
 
         game.highlight_cells = []
+        game.selected_cell = None
 
         # check the empty command
         if command == '':
