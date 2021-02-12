@@ -9,9 +9,9 @@ import copy
 import time
 
 try:
-    import moves
-except ImportError:
     from . import moves
+except ImportError:
+    import moves
 
 VERSION = '0.0.5'
 
