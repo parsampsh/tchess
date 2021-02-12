@@ -41,7 +41,7 @@ class Piece:
         self.color = color
 
     def __str__(self):
-        return self.color + '-' + self.name
+        return ('w' if self.color == 'white' else 'b') + '-' + self.name
 
     def allowed_moves(self, game, src, dst, return_locations=False):
         """ Returns the allowed targets for move for this piece
@@ -146,8 +146,8 @@ class Piece:
 class Game:
     """ The running game handler """
 
-    ROW_SEPARATOR = '|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|\n'
-    CELL_WIDTH = 13
+    ROW_SEPARATOR = ('|-----------'*8) + '|\n'
+    CELL_WIDTH = 10
 
     def __init__(self):
         self.turn = 'white'
@@ -328,7 +328,7 @@ class Game:
                     ansi_color = Ansi.GREEN if column.color == 'white' else Ansi.RED
                     ansi_reset = Ansi.RESET
                 if [i, j] in self.highlight_cells:
-                    column_str += '*'
+                    column_str = ' *' + column_str.lstrip() + '*'
                 output += '| ' + ansi_color + column_str + ansi_reset + (' ' * (self.CELL_WIDTH-len(column_str)))
                 j += 1
             output += '|\n'
