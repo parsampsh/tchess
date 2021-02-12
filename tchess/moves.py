@@ -8,84 +8,43 @@ def pawn_move(self, game, src, dst):
     x = src[0]
     y = src[1]
     result = []
-    if self.color == 'white':
-        if x == 1:
-            result = [
-                [2, y],
-                [3, y],
-            ]
-        else:
-            result = [
-                [x + 1, y],
-            ]
-        a = 0
-        while a < len(result):
-            tmp = result[a]
-            try:
-                if game.board[tmp[0]][tmp[1]] is not None:
-                    result.pop(a)
-                    if a == 0:
-                        result.pop(0)
-                        break
-                    a -= 1
-            except:
-                pass
-            a += 1
-        try:
-            if game.board[x + 1][y + 1] is not None:
-                if game.board[x + 1][y + 1].color != self.color:
-                    result.append([x + 1, y + 1])
-        except:
-            pass
-        try:
-            if game.board[x + 1][y - 1] is not None:
-                if game.board[x + 1][y - 1].color != self.color:
-                    result.append([x + 1, y - 1])
-        except:
-            pass
+    pawns_row = 1 if self.color == 'white' else 6
+    pawns_front_two_cells = [2, 3] if self.color == 'white' else [5, 4]
+    pawns_one_row_front = 1 if self.color == 'white' else -1
+
+    if x == pawns_row:
+        result = [
+            [pawns_front_two_cells[0], y],
+            [pawns_front_two_cells[1], y],
+        ]
     else:
-        if x == 6:
-            result = [
-                [5, y],
-                [4, y],
-            ]
-        else:
-            result = [
-                [x - 1, y],
-            ]
-        a = 0
-        while a < len(result):
-            tmp = result[a]
-            try:
-                if game.board[tmp[0]][tmp[1]] is not None:
-                    result.pop(a)
-                    if a == 0:
-                        result.pop(0)
-                        break
-                    a -= 1
-            except:
-                pass
-            a += 1
+        result = [
+            [x + pawns_one_row_front, y],
+        ]
+    a = 0
+    while a < len(result):
+        tmp = result[a]
         try:
-            if game.board[x - 1][y + 1] is not None:
-                if game.board[x - 1][y + 1].color != self.color:
-                    result.append([x - 1, y + 1])
+            if game.board[tmp[0]][tmp[1]] is not None:
+                result.pop(a)
+                if a == 0:
+                    result.pop(0)
+                    break
+                a -= 1
         except:
             pass
-        try:
-            if game.board[x - 1][y - 1] is not None:
-                if game.board[x - 1][y - 1].color != self.color:
-                    result.append([x - 1, y - 1])
-        except:
-            pass
-        a = 0
-        while a < len(result):
-            tmp = result[a]
-            try:
-                if game.board[tmp[0]][tmp[1]] is not None:
-                    if tmp[1] == y:
-                        result.pop(a)
-            except:
-                pass
-            a += 1
+        a += 1
+    try:
+        if game.board[x + pawns_one_row_front][y + 1] is not None:
+            if game.board[x + pawns_one_row_front][y + 1].color != self.color:
+                result.append([x + pawns_one_row_front, y + 1])
+    except:
+        pass
+    try:
+        if game.board[x + pawns_one_row_front][y - 1] is not None:
+            if game.board[x + pawns_one_row_front][y - 1].color != self.color:
+                result.append([x + pawns_one_row_front, y - 1])
+    except:
+        pass
+
     return result
