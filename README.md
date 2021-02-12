@@ -177,3 +177,9 @@ TESTS = [
     # ...
 ]
 ```
+
+For using **pylint** to check code quality, you can use make:
+
+```bash
+$ make pylint
+```
