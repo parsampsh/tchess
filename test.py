@@ -3,7 +3,6 @@
 """ Runs the tchess tests """
 
 import os
-import pickle
 import subprocess
 from tchess import Game, Piece, load_game_from_file
 
@@ -177,12 +176,15 @@ def test_pawn_move_validation_works():
 
     game.run_command('mv 2.1 4.1')
     game.run_command('mv 7.1 5.1')
-    assert str_contains_all(game.run_command('mv 4.1 5.1').lower(), ['error', 'location', 'allowed', 'not'])
+    assert str_contains_all(
+        game.run_command('mv 4.1 5.1').lower(),
+        ['error', 'location', 'allowed', 'not']
+    )
 
     assert str_contains_all(game.run_command('s 4.1').lower(), ['cannot', 'move'])
 
     game = Game()
-    
+
     game.run_command('mv 2.1 4.1')
     game.run_command('mv 7.8 6.8')
     game.run_command('mv 4.1 5.1')
