@@ -36,12 +36,21 @@ class Piece:
     BISHOP = 'bishop'
     ROCK = 'rock'
 
+    ICONS = {
+        'pawn': 'pawn',
+        'king': 'king',
+        'queen': 'queen',
+        'knight': 'knight',
+        'bishop': 'bishop',
+        'rock': 'rock',
+    }
+
     def __init__(self, name: str, color: str):
         self.name = name
         self.color = color
 
     def __str__(self):
-        return ('w' if self.color == 'white' else 'b') + '-' + self.name
+        return ('w' if self.color == 'white' else 'b') + '-' + self.ICONS[self.name]
 
     def allowed_moves(self, game, src, dst, return_locations=False):
         """ Returns the allowed targets for move for this piece
