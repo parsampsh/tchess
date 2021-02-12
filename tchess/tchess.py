@@ -22,6 +22,7 @@ class Ansi:
     RED = '\033[31m'
     RESET = '\033[0m'
     GRAY = '\033[37m'
+    CYAN = '\033[96m'
 
     @staticmethod
     def disable():
@@ -30,6 +31,7 @@ class Ansi:
         Ansi.RED = ''
         Ansi.RESET = ''
         Ansi.GRAY = ''
+        Ansi.CYAN = ''
 
 class Piece:
     """ Each piece in the chess board """
@@ -265,7 +267,7 @@ class Game:
                     ansi_reset = Ansi.RESET
                 else:
                     column_str = str(column)
-                    ansi_color = Ansi.GREEN if column.color == 'white' else Ansi.RED
+                    ansi_color = Ansi.CYAN if column.color == 'white' else Ansi.RED
                     ansi_reset = Ansi.RESET
                 if [i, j] in self.highlight_cells:
                     column_str = ' *' + column_str.lstrip() + '*'
@@ -405,7 +407,7 @@ def run(args=[]):
 
         # get command from user and run it
         tmp_turn = game.turn
-        ansi_color = Ansi.RED if tmp_turn == 'black' else Ansi.GREEN
+        ansi_color = Ansi.RED if tmp_turn == 'black' else Ansi.CYAN
         # fix whitespace
         print(last_message, end='')
         print(' ' * (len(Game.ROW_SEPARATOR)-len(last_message)))
