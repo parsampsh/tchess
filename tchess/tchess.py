@@ -261,9 +261,12 @@ class Game:
     def render(self) -> str:
         """ Renders the board to show in the terminal """
         output = ''
+        for i in range(1, 9):
+            output += (int(self.CELL_WIDTH/2) * ' ') + str(i) + (' ' * (int(self.CELL_WIDTH/2)+1))
+        output += '\n'
         i = 0
         for row in self.board:
-            output += self.ROW_SEPARATOR
+            output += '  ' + self.ROW_SEPARATOR + str(i+1) + ' '
             j = 0
             for column in row:
                 if column is None:
@@ -280,7 +283,11 @@ class Game:
                 j += 1
             output += '|\n'
             i += 1
-        output += self.ROW_SEPARATOR
+        output += '  ' + self.ROW_SEPARATOR
+        lines = output.splitlines()
+        output = ''
+        for line in lines:
+            output += ' ' + line + '\n'
         return output
 
 def show_help():
@@ -362,10 +369,10 @@ def run(args=[]):
     try:
         terminal_width = os.get_terminal_size().columns
     except:
-        terminal_width = len(Game.ROW_SEPARATOR)
-    if terminal_width < len(Game.ROW_SEPARATOR):
+        terminal_width = len(Game.ROW_SEPARATOR)+3
+    if terminal_width < len(Game.ROW_SEPARATOR)+3:
         print(
-            'ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)) + '.',
+            'ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)+3) + '.',
             file=sys.stderr
         )
         sys.exit(1)
