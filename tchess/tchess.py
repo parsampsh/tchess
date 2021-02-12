@@ -8,6 +8,11 @@ import os
 import copy
 import time
 
+try:
+    import moves
+except ImportError:
+    from . import moves
+
 VERSION = '0.0.4'
 
 class Ansi:
@@ -52,93 +57,6 @@ class Piece:
     def __str__(self):
         return ('w' if self.color == 'white' else 'b') + '-' + self.ICONS[self.name]
 
-    def pawn_move(self, game, src, dst):
-        """ Validates pawn move """
-        x = src[0]
-        y = src[1]
-        result = []
-        if self.color == 'white':
-            if x == 1:
-                result = [
-                    [2, y],
-                    [3, y],
-                ]
-            else:
-                result = [
-                    [x + 1, y],
-                ]
-            a = 0
-            while a < len(result):
-                tmp = result[a]
-                try:
-                    if game.board[tmp[0]][tmp[1]] is not None:
-                        result.pop(a)
-                        if a == 0:
-                            result.pop(0)
-                            break
-                        a -= 1
-                except:
-                    pass
-                a += 1
-            try:
-                if game.board[x + 1][y + 1] is not None:
-                    if game.board[x + 1][y + 1].color != self.color:
-                        result.append([x + 1, y + 1])
-            except:
-                pass
-            try:
-                if game.board[x + 1][y - 1] is not None:
-                    if game.board[x + 1][y - 1].color != self.color:
-                        result.append([x + 1, y - 1])
-            except:
-                pass
-        else:
-            if x == 6:
-                result = [
-                    [5, y],
-                    [4, y],
-                ]
-            else:
-                result = [
-                    [x - 1, y],
-                ]
-            a = 0
-            while a < len(result):
-                tmp = result[a]
-                try:
-                    if game.board[tmp[0]][tmp[1]] is not None:
-                        result.pop(a)
-                        if a == 0:
-                            result.pop(0)
-                            break
-                        a -= 1
-                except:
-                    pass
-                a += 1
-            try:
-                if game.board[x - 1][y + 1] is not None:
-                    if game.board[x - 1][y + 1].color != self.color:
-                        result.append([x - 1, y + 1])
-            except:
-                pass
-            try:
-                if game.board[x - 1][y - 1] is not None:
-                    if game.board[x - 1][y - 1].color != self.color:
-                        result.append([x - 1, y - 1])
-            except:
-                pass
-            a = 0
-            while a < len(result):
-                tmp = result[a]
-                try:
-                    if game.board[tmp[0]][tmp[1]] is not None:
-                        if tmp[1] == y:
-                            result.pop(a)
-                except:
-                    pass
-                a += 1
-        return result
-
     def allowed_moves(self, game, src, dst, return_locations=False):
         """ Returns the allowed targets for move for this piece
 
@@ -153,7 +71,7 @@ class Piece:
         y = src[1]
         result = []
         if self.name == 'pawn':
-            result = self.pawn_move(game, src, dst)
+            result = moves.pawn_move(self, game, src, dst)
         else:
             if not return_locations:
                 return True
