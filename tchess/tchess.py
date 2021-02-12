@@ -147,6 +147,7 @@ class Game:
     """ The running game handler """
 
     ROW_SEPARATOR = '|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|\n'
+    CELL_WIDTH = 13
 
     def __init__(self):
         self.turn = 'white'
@@ -328,7 +329,7 @@ class Game:
                     ansi_reset = Ansi.RESET
                 if [i, j] in self.highlight_cells:
                     column_str += '*'
-                output += '| ' + ansi_color + column_str + ansi_reset + (' ' * (13-len(column_str)))
+                output += '| ' + ansi_color + column_str + ansi_reset + (' ' * (self.CELL_WIDTH-len(column_str)))
                 j += 1
             output += '|\n'
             i += 1
