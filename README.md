@@ -15,6 +15,8 @@ To start a game:
 
 ```bash
 $ tchess
+# OR
+$ python3 -m tchess
 ```
 
 Also if you don't want use pip, you can clone this project and:
