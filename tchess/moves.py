@@ -31,20 +31,20 @@ def pawn_move(self, game, src, dst):
                     result.pop(0)
                     break
                 a -= 1
-        except:
+        except IndexError:
             pass
         a += 1
     try:
         if game.board[x + pawns_one_row_front][y + 1] is not None:
             if game.board[x + pawns_one_row_front][y + 1].color != self.color:
                 result.append([x + pawns_one_row_front, y + 1])
-    except:
+    except IndexError:
         pass
     try:
         if game.board[x + pawns_one_row_front][y - 1] is not None:
             if game.board[x + pawns_one_row_front][y - 1].color != self.color:
                 result.append([x + pawns_one_row_front, y - 1])
-    except:
+    except IndexError:
         pass
 
     return result
