@@ -198,7 +198,7 @@ class Game:
                         allowed_moves = self.board[location[0]][location[1]].allowed_moves(self, (location[0], location[1]), (location[0], location[1]), return_locations=True)
 
                         # show allowed moves
-                        self.highlight_cells = allowed_moves
+                        self.highlight_cells = [location, *allowed_moves]
 
                         return '' if self.highlight_cells else 'This piece cannot move!'
                     except:
@@ -270,7 +270,7 @@ class Game:
                     ansi_color = Ansi.CYAN if column.color == 'white' else Ansi.RED
                     ansi_reset = Ansi.RESET
                 if [i, j] in self.highlight_cells:
-                    column_str = ' *' + column_str.lstrip() + '*'
+                    column_str = '*' + column_str.lstrip() + '*'
                 output += '| ' + ansi_color + column_str + ansi_reset + (' ' * (self.CELL_WIDTH-len(column_str)))
                 j += 1
             output += '|\n'
