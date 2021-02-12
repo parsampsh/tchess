@@ -8,6 +8,8 @@ import os
 import copy
 import time
 
+VERSION = '0.0.4'
+
 class Ansi:
     """ The terminal ansi chars """
 
@@ -347,6 +349,7 @@ SYNOPSIS
 
 OPTIONS
     --help: shows this help
+    --version|-v: shows the version of tchess
     --no-ansi: disable terminal ansi colors
     --replay: play the saved game
     --replay-speed: delay between play frame (for example `3`(secound) or `0.5`)
@@ -371,6 +374,11 @@ def run(args=[]):
     # parse the arguments
     options = [arg for arg in args if arg.startswith('-')]
     arguments = [arg for arg in args if not arg.startswith('-')]
+
+    # check `--version` option
+    if '--version' in options or '-v' in options:
+        print(VERSION)
+        sys.exit()
 
     # check the `--help` option
     if '--help' in options:
