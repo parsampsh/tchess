@@ -73,6 +73,9 @@ class Piece:
                 try:
                     if game.board[tmp[0]][tmp[1]] is not None:
                         result.pop(a)
+                        if a == 0:
+                            result.pop(0)
+                            break
                         a -= 1
                 except:
                     pass
@@ -105,6 +108,9 @@ class Piece:
                 try:
                     if game.board[tmp[0]][tmp[1]] is not None:
                         result.pop(a)
+                        if a == 0:
+                            result.pop(0)
+                            break
                         a -= 1
                 except:
                     pass

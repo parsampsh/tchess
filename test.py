@@ -181,6 +181,16 @@ def test_pawn_move_validation_works():
 
     assert str_contains_all(game.run_command('s 4.1').lower(), ['cannot', 'move'])
 
+    game = Game()
+    
+    game.run_command('mv 2.1 4.1')
+    game.run_command('mv 7.8 6.8')
+    game.run_command('mv 4.1 5.1')
+    game.run_command('mv 6.8 5.8')
+    game.run_command('mv 5.1 6.1')
+    game.run_command('mv 7.2 6.1')
+    assert str_contains_all(game.run_command('s 7.1').lower(), ['piece', 'move', 'cannot'])
+
 TESTS = [
     test_default_state_is_valid,
     test_turn_changer_works,
