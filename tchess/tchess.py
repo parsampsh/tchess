@@ -403,15 +403,15 @@ class Game:
 
 def show_help():
     """ Prints the help message """
-    print('''TChess - Play the chess in terminal
+    print('''tchess - Play the chess in terminal
+
+SYNOPSIS
+    $ '''+sys.argv[0]+''' [options...] [?game-file-name]
 
 DESCRIPTION
     The TChess is a chess game in terminal.
     This software can handle saving the game in a file
     Then you can continue your game later by loading that file
-
-SYNOPSIS
-    $ '''+sys.argv[0]+''' [options...] [?game-file-name]
 
 OPTIONS
     --help: shows this help

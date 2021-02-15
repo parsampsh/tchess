@@ -197,3 +197,11 @@ For using **pylint** to check code quality, you can use make:
 ```bash
 $ make pylint
 ```
+
+For generating manual page(man) in the `man/tchess.1`, you can run:
+
+```bash
+$ ./bin/generate-man-page.py
+```
+
+(This is possible ONLY on Unix systems).
