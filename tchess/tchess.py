@@ -72,14 +72,16 @@ class Piece:
         x = src[0]
         y = src[1]
         result = []
-        if self.name == 'pawn':
-            result = moves.pawn_move(self, game, src, dst)
-        elif self.name == 'rock':
-            result = moves.rock_move(self, game, src, dst)
-        elif self.name == 'queen':
-            result = [*moves.rock_move(self, game, src, dst)]
-        elif self.name == 'king':
-            result = moves.king_move(self, game, src, dst)
+        if self.name == Piece.PAWN:
+            result = moves.pawn_move(self, game, src)
+        elif self.name == Piece.ROCK:
+            result = moves.rock_move(self, game, src)
+        elif self.name == Piece.QUEEN:
+            result = [*moves.rock_move(self, game, src)]
+        elif self.name == Piece.KING:
+            result = moves.king_move(self, game, src)
+        elif self.name == Piece.KNIGHT:
+            result = moves.knight_move(self, game, src)
         else:
             if not return_locations:
                 return True

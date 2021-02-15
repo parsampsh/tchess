@@ -3,7 +3,7 @@
 In this module, we have some functions to validate different pieces moves.
 """
 
-def pawn_move(self, game, src, dst):
+def pawn_move(self, game, src):
     """ Validates pawn move """
     x = src[0]
     y = src[1]
@@ -49,7 +49,7 @@ def pawn_move(self, game, src, dst):
 
     return result
 
-def rock_move(self, game, src, dst):
+def rock_move(self, game, src):
     """ Validates rock move """
     x = src[0]
     y = src[1]
@@ -89,7 +89,7 @@ def rock_move(self, game, src, dst):
 
     return result
 
-def king_move(self, game, src, dst):
+def king_move(self, game, src):
     """ Validates king move """
     x = src[0]
     y = src[1]
@@ -97,6 +97,39 @@ def king_move(self, game, src, dst):
         [x+1, y+1], [x+1, y], [x+1, y-1],
         [x,   y+1],           [x,   y-1],
         [x-1, y+1], [x-1, y], [x-1, y-1],
+    ]
+
+    new_result = []
+    i = 0
+    while i < len(result):
+        a = result[i][0]
+        b = result[i][1]
+        if a >= 0 and b >= 0:
+            try:
+                if game.board[a][b] is not None:
+                    if game.board[a][b].color != self.color:
+                        new_result.append(result[i])
+                else:
+                    new_result.append(result[i])
+            except IndexError:
+                pass
+        i += 1
+
+    return new_result
+
+def knight_move(self, game, src):
+    """ Validates knight move """
+    x = src[0]
+    y = src[1]
+    result = [
+        [x+1, y+2],
+        [x-1, y+2],
+        [x+1, y-2],
+        [x-1, y-2],
+        [x+2, y+1],
+        [x+2, y-1],
+        [x-2, y+1],
+        [x-2, y-1],
     ]
 
     new_result = []

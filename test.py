@@ -245,6 +245,11 @@ def test_king_move_validation_works():
     game.run_command('mv 2.2 3.2')
     assert str_contains_all(game.run_command('mv 6.4 5.4').lower(), ['moved', 'to'])
 
+def test_knight_move_validation_works():
+    """ Knight move validation working correct """
+    game = Game()
+    # TODO : write test for knight
+
 TESTS = [
     test_default_state_is_valid,
     test_turn_changer_works,
@@ -255,6 +260,7 @@ TESTS = [
     test_pawn_move_validation_works,
     test_rock_move_validation_works,
     test_king_move_validation_works,
+    test_knight_move_validation_works,
 ]
 
 # running the tests

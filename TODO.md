@@ -1,6 +1,6 @@
 # TODO
 
-- validate move of pieces (knight and bishop)
+- validate move of bishop
 - create back command
 - show simple info of game in the screen
 - handle check and checkmate
