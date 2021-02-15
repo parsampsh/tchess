@@ -5,7 +5,10 @@ import os
 def main():
     """ Main cli """
     # generate the man page using help2man tool
-    os.system('help2man "python3 tchess" --output=man/tchess.1')
+    result = os.system('help2man "python3 tchess" --output=man/tchess.1')
+
+    if result != 0:
+        return
 
     # read the generated file
     f = open('man/tchess.1', 'r')
