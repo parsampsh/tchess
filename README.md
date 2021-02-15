@@ -137,6 +137,15 @@ Also you can see which pieces in the board are allowed to go to the which cells:
 The above command `s <cell-address>`, will show you the piece in the entered address can go to
 which cells (The allowed cells will be highlighted with `*`).
 
+### Back
+You can revert your moves and back to the previous status.
+
+```
+>>> back
+```
+
+This is useful if you insert a wrong command or move wrong.
+
 ### Replaying a saved game
 If you played a game and it is saved, you can play that!
 

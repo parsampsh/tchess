@@ -258,6 +258,27 @@ def test_knight_move_validation_works():
     game.run_command('mv 7.2 5.2')
     assert str_contains_all(game.run_command('mv 3.3 5.2').lower(), ['moved', 'to'])
 
+def test_command_back_works():
+    """ Command `back` works """
+    game = Game()
+    assert game.logs == []
+    game.run_command('mv 2.1 3.1')
+    game.run_command('mv 7.3 5.3')
+    assert game.logs == ['mv 2.1 3.1', 'mv 7.3 5.3']
+    assert game.board[1][0] is None
+    assert game.board[2][0] is not None
+    assert game.board[6][2] is None
+    assert game.board[4][2] is not None
+    game.run_command('back')
+    assert game.logs == ['mv 2.1 3.1']
+    assert game.board[1][0] is None
+    assert game.board[2][0] is not None
+    assert game.board[6][2] is not None
+    assert game.board[4][2] is None
+
+    game = Game()
+    assert str_contains_all(game.run_command('back'), ['first', 'move'])
+
 TESTS = [
     test_default_state_is_valid,
     test_turn_changer_works,
@@ -269,6 +290,7 @@ TESTS = [
     test_rock_move_validation_works,
     test_king_move_validation_works,
     test_knight_move_validation_works,
+    test_command_back_works,
 ]
 
 # running the tests

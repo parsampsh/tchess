@@ -190,7 +190,26 @@ class Game:
 
         result_msg = 'Runed'
 
-        if len(cmd_parts) == 2:
+        if len(cmd_parts) == 1:
+            if cmd_parts[0] == 'back':
+                if not self.logs:
+                    invalid_msg = 'Please move something first!'
+                else:
+                    # back
+                    new_game = Game()
+                    while self.logs:
+                        if not self.logs[-1].startswith('m'):
+                            self.logs.pop()
+                        else:
+                            self.logs.pop()
+                            break
+                    for cmd in self.logs:
+                        new_game.run_command(cmd)
+                    self.logs = new_game.logs
+                    self.board = new_game.board
+                    self.turn = new_game.turn
+                    return 'OK! now you are one step back!'
+        elif len(cmd_parts) == 2:
             # s <location>
             if cmd_parts[0] == 's':
                 location = cmd_parts[1].replace('.', '-').split('-')
