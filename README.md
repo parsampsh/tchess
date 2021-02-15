@@ -58,6 +58,7 @@ $ tchess [options...] [?game-file-name]
 - `--help`: shows the help
 - `--version|-v`: shows version of the tchess
 - `--no-ansi`: disables the Ansi color chars
+- `--dont-check-terminal`: do not check terminal size
 
 ### Game flow
 

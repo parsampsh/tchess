@@ -419,6 +419,7 @@ OPTIONS
     --no-ansi: disable terminal ansi colors
     --replay: play the saved game
     --replay-speed: delay between play frame (for example `3`(secound) or `0.5`)
+    --dont-check-terminal: do not check terminal size
 
 AUTHOR
     This software is created by Parsa Shahmaleki <parsampsh@gmail.com>
@@ -477,16 +478,17 @@ def run(args=[]):
             break
 
     # check the terminal size
-    try:
-        terminal_width = os.get_terminal_size().columns
-    except:
-        terminal_width = len(Game.ROW_SEPARATOR)+3
-    if terminal_width < len(Game.ROW_SEPARATOR)+3:
-        print(
-            'ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)+3) + '.',
-            file=sys.stderr
-        )
-        sys.exit(1)
+    if not '--dont-check-terminal' in options:
+        try:
+            terminal_width = os.get_terminal_size().columns
+        except:
+            terminal_width = len(Game.ROW_SEPARATOR)+3
+        if terminal_width < len(Game.ROW_SEPARATOR)+3:
+            print(
+                'ERROR: your terminal width is less than ' + str(len(Game.ROW_SEPARATOR)+3) + '. use --dont-check-terminal to ignore it.',
+                file=sys.stderr
+            )
+            sys.exit(1)
 
     if len(arguments) > 0:
         game_file_name = arguments[0]
