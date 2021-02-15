@@ -258,6 +258,11 @@ def test_knight_move_validation_works():
     game.run_command('mv 7.2 5.2')
     assert str_contains_all(game.run_command('mv 3.3 5.2').lower(), ['moved', 'to'])
 
+def test_bishop_move_validation_works():
+    """ Bishop move validation working correct """
+    game = Game()
+    # TODO : write this test
+
 def test_command_back_works():
     """ Command `back` works """
     game = Game()
@@ -290,6 +295,7 @@ TESTS = [
     test_rock_move_validation_works,
     test_king_move_validation_works,
     test_knight_move_validation_works,
+    test_bishop_move_validation_works,
     test_command_back_works,
 ]
 

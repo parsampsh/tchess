@@ -77,11 +77,13 @@ class Piece:
         elif self.name == Piece.ROCK:
             result = moves.rock_move(self, game, src)
         elif self.name == Piece.QUEEN:
-            result = [*moves.rock_move(self, game, src)]
+            result = [*moves.rock_move(self, game, src), *moves.bishop_move(self, game, src)]
         elif self.name == Piece.KING:
             result = moves.king_move(self, game, src)
         elif self.name == Piece.KNIGHT:
             result = moves.knight_move(self, game, src)
+        elif self.name == Piece.BISHOP:
+            result = moves.bishop_move(self, game, src)
         else:
             result = []
         if return_locations:
