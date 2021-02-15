@@ -248,7 +248,15 @@ def test_king_move_validation_works():
 def test_knight_move_validation_works():
     """ Knight move validation working correct """
     game = Game()
-    # TODO : write test for knight
+    game.run_command('s 1.2')
+    assert game.highlight_cells == [[2, 2], [2, 0]]
+    game.run_command('s 8.7')
+    assert game.highlight_cells == [[5, 7], [5, 5]]
+    game.run_command('mv 1.2 3.3')
+    game.run_command('s 3.3')
+    assert game.highlight_cells == [[3, 4], [3, 0], [4, 3], [4, 1], [0, 1]]
+    game.run_command('mv 7.2 5.2')
+    assert str_contains_all(game.run_command('mv 3.3 5.2').lower(), ['moved', 'to'])
 
 TESTS = [
     test_default_state_is_valid,
