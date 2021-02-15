@@ -431,8 +431,16 @@ AUTHOR
 def load_game_from_file(path: str):
     """ Loads the game object from a file """
     tmp_f = open(path, 'rb')
-    game = pickle.load(tmp_f)
+    file_game = pickle.load(tmp_f)
     tmp_f.close()
+    game = Game()
+    game.turn = str(file_game.turn)
+    game.logs = list(file_game.logs)
+    game.version = int(file_game.version)
+    game.highlight_cells = list(file_game.highlight_cells)
+    game.white_player = str(file_game.white_player)
+    game.black_player = str(file_game.black_player)
+    game.board = list(file_game.board)
     return game
 
 def run(args=[]):
