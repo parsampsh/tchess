@@ -261,7 +261,30 @@ def test_knight_move_validation_works():
 def test_bishop_move_validation_works():
     """ Bishop move validation working correct """
     game = Game()
-    # TODO : write this test
+
+    assert str_contains_all(game.run_command('s 1.3'), ['cannot', 'move'])
+    assert str_contains_all(game.run_command('s 8.6'), ['cannot', 'move'])
+
+    game.run_command('mv 2.4 3.4')
+    game.run_command('s 1.3')
+    assert game.highlight_cells == [[1, 3], [2, 4], [3, 5], [4, 6], [5, 7]]
+    game.run_command('mv 7.1 6.1')
+    game.run_command('mv 1.3 4.6')
+    game.run_command('s 4.6')
+    assert game.highlight_cells == [[4, 6], [5, 7], [2, 4], [1, 3], [0, 2], [2, 6], [4, 4], [5, 3], [6, 2]]
+    game.run_command('mv 7.4 6.4')
+    game.run_command('mv 4.6 6.4')
+    assert game.board[3][5] is None
+    assert game.board[5][3].name == Piece.BISHOP
+    game.run_command('s 8.3')
+    assert game.highlight_cells == [[6, 3], [5, 4], [4, 5], [3, 6], [2, 7]]
+    game.run_command('mv 8.3 5.6')
+    game.run_command('s 5.6')
+    assert game.highlight_cells == [[3, 4], [2, 3], [5, 6], [5, 4], [6, 3], [7, 2], [3, 6], [2, 7]]
+    game.run_command('mv 2.1 3.1')
+    game.run_command('mv 5.6 3.4')
+    assert game.board[4][5] is None
+    assert game.board[2][3].name == Piece.BISHOP
 
 def test_command_back_works():
     """ Command `back` works """

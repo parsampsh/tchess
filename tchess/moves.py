@@ -198,4 +198,10 @@ def bishop_move(self, game, src):
             i += -loop[1]
             j += loop[1]
 
-    return result
+    new_result = []
+    for item in result:
+        if item[0] >= 0 and item[1] >= 0:
+            if item != src:
+                new_result.append(item)
+
+    return new_result
