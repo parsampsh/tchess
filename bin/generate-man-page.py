@@ -5,7 +5,7 @@ import os
 def main():
     """ Main cli """
     # generate the man page using help2man tool
-    result = os.system('help2man "python3 tchess" --output=man/tchess.1')
+    result = os.system('help2man "python3 tchess --verbose" --output=man/tchess.1')
 
     if result != 0:
         return
@@ -16,8 +16,8 @@ def main():
     f.close()
 
     # make the changes
-    content = content.replace('python3 tchess', 'tchess')
-    content = content.replace('PYTHON3 TCHESS', 'TCHESS')
+    content = content.replace('python3 tchess --verbose', 'tchess')
+    content = content.replace('PYTHON3 TCHESS --VERBOSE', 'TCHESS')
     content = content.replace('.PP', '.SH')
     content = content.replace('.IP', '')
     content = content.replace('.SH DESCRIPTION', '', 1)
