@@ -13,7 +13,7 @@ try:
 except ImportError:
     import moves
 
-VERSION = '0.0.8'
+VERSION = '0.0.9'
 
 class Ansi:
     """ The terminal ansi chars """
