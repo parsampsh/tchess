@@ -67,7 +67,7 @@ def test_command_runner_works():
     assert str_contains_all(game.run_command('mv 4.3 to 6-3').lower(), ['error', 'source', 'empty'])
     assert game.run_command('mv hi to 43543').lower().startswith('invalid')
     assert str_contains_all(game.run_command('mv 7.2 to 5.3').lower(), ['error', 'turn'])
-    assert str_contains_all(game.run_command('mv 1.3 to 2.4').lower(), ['error', 'kill', 'self'])
+    assert str_contains_all(game.run_command('mv 1.4 to 2.4').lower(), ['not', 'allowed'])
 
     assert game.board[1][0] is not None
     assert game.board[3][0] is None

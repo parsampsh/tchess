@@ -83,8 +83,7 @@ class Piece:
         elif self.name == Piece.KNIGHT:
             result = moves.knight_move(self, game, src)
         else:
-            if not return_locations:
-                return True
+            result = []
         if return_locations:
             return result
         if dst in result:
