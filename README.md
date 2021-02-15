@@ -169,6 +169,20 @@ $ tchess --replay my-saved-game.file --replay-speed=0.5
 
 (sort of options is not important).
 
+### Manpage
+If you want to see the tchess manpage, run this command after installation via pip:
+
+```bash
+$ man tchess
+```
+
+or if you want to see manpage from source code, run:
+
+```bash
+$ cd /path/to/tchess
+$ man -l man/tchess.1
+```
+
 ## Development
 If you are developing this software, you can run the tests using `test.py`:
 
