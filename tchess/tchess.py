@@ -115,6 +115,10 @@ class Game:
         # this item determines the selected piece using `s` command
         self.selected_cell = None
 
+        # the player names
+        self.white_player = 'White'
+        self.black_player = 'Black'
+
         # initialize the board
         self.board = []
         for i in range(8):
@@ -334,6 +338,18 @@ class Game:
     def render(self) -> str:
         """ Renders the board to show in the terminal """
         output = ''
+
+        # render the player names
+        white_player = self.white_player
+        black_player = self.black_player
+        white_space_len = (len(self.ROW_SEPARATOR) - (len(white_player)+len(black_player))) - 2
+        white_space_len = int(white_space_len/2)
+        player_names = Ansi.CYAN + white_player + Ansi.RESET + (' ' * white_space_len) + 'Vs' + (' ' * white_space_len) + Ansi.RED + black_player + Ansi.RESET
+
+        output += player_names + '\n'
+        output += ('_' * len(self.ROW_SEPARATOR)) + '\n'
+        output += (' ' * len(self.ROW_SEPARATOR)) + '\n'
+
         for i in range(1, 9):
             output += (int(self.CELL_WIDTH/2) * ' ') + str(i) + (' ' * (int(self.CELL_WIDTH/2)+1))
         output += '\n'
