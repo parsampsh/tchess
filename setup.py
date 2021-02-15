@@ -23,5 +23,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "License :: OSI Approved :: MIT License"
     ],
+    install_requires=['karafs>=0.1'],
     python_requires='>=3.6',
 )

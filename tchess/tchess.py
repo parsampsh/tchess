@@ -13,6 +13,11 @@ try:
 except ImportError:
     import moves
 
+try:
+    import karafs
+except:
+    pass
+
 VERSION = '0.0.8'
 
 class Ansi:
@@ -118,6 +123,12 @@ class Game:
         # the player names
         self.white_player = 'White'
         self.black_player = 'Black'
+
+        try:
+            self.white_player = karafs.gen_str('en')
+            self.black_player = karafs.gen_str('en')
+        except:
+            pass
 
         # initialize the board
         self.board = []
