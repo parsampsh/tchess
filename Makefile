@@ -1,4 +1,5 @@
 .PHONY := pylint man test all
+.DEFAULT_GOAL := all
 PY = $(shell which python3)
 
 pylint:
@@ -10,5 +11,5 @@ manpage:
 test:
 	@$(PY) test.py
 
-all: pylint man test
+all: pylint manpage test
 	-@git status
