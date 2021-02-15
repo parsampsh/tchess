@@ -18,6 +18,7 @@ setuptools.setup(
     url="https://github.com/parsampsh/tchess",
     packages=setuptools.find_packages(),
     scripts=['bin/tchess'],
+    data_files = [('man/man1', ['man/tchess.1']),],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
