@@ -121,6 +121,10 @@ class Game:
         self.white_player = 'White'
         self.black_player = 'Black'
 
+        # game status
+        self.is_end = False
+        self.winner = None
+
         # initialize the board
         self.board = []
         for i in range(8):
@@ -165,6 +169,25 @@ class Game:
         If currently is white turn, set turn to black and reverse
         """
         self.turn = 'black' if self.turn == 'white' else 'white'
+
+        self.handle_checkmate()
+
+    def handle_checkmate(self):
+        """ Handle the checkmate """
+        for i in range(0, len(self.board)):
+            for j in range(0, len(self.board[i])):
+                if self.board[i][j] is not None:
+                    if self.board[i][j].color == self.turn:
+                        for item in self.board[i][j].allowed_moves(self, [i, j], [0, 0], return_locations=True):
+                            if self.board[item[0]][item[1]] is not None:
+                                if self.board[item[0]][item[1]].color != self.turn:
+                                    if self.board[item[0]][item[1]].name == Piece.KING:
+                                        self.checkmate()
+
+    def checkmate(self):
+        """ Changes game status to the checkmate """
+        self.is_end = True
+        self.winner = self.turn
 
     def move(self, src, dst):
         """ Moves src to dst """
@@ -545,6 +568,8 @@ def load_game_from_file(path: str):
     game.white_player = str(file_game.white_player)
     game.black_player = str(file_game.black_player)
     game.board = list(file_game.board)
+    game.is_end = bool(file_game.is_end)
+    game.winner = file_game.winner
     return game
 
 def run(args=[]):
@@ -653,6 +678,19 @@ def run(args=[]):
         print(' ' * len(Game.ROW_SEPARATOR))
         print(game.render())
 
+        if game.is_end:
+            # game is finished
+            print(Ansi.GREEN + 'Checkmate!' + Ansi.RESET + (' ' * (len(Game.ROW_SEPARATOR)-10)))
+            color = Ansi.CYAN if game.winner == 'white' else Ansi.RED
+            print(color + game.winner + Ansi.GREEN + ' won!' + Ansi.RESET)
+            next_step = input('Press enter to continnue or type `back`: ').strip().lower()
+            if next_step == 'back':
+                game.is_end = False
+                game.winner = None
+                game.run_command('back')
+            else:
+                break
+
         # get command from user and run it
         tmp_turn = game.turn
         ansi_color = Ansi.RED if tmp_turn == 'black' else Ansi.CYAN
@@ -696,9 +734,10 @@ def run(args=[]):
         # open a file
         # this file is used to save the game state
         # after any command on the game, game will be re-write on this file
-        game_file = open(game_file_name, 'wb')
-        pickle.dump(game, game_file)
-        game_file.close()
+        if not is_play:
+            game_file = open(game_file_name, 'wb')
+            pickle.dump(game, game_file)
+            game_file.close()
 
 if __name__ == '__main__':
     run(sys.argv[1:])

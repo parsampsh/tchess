@@ -307,6 +307,29 @@ def test_command_back_works():
     game = Game()
     assert str_contains_all(game.run_command('back'), ['first', 'move'])
 
+def test_checkmate_and_example():
+    """ Checkmate works with a example """
+    commands = [
+        'mv 2.6 3.6',
+        'mv 7.1 6.1',
+        'mv 1.5 3.7',
+        'mv 6.1 5.1',
+        'mv 1.2 3.3',
+        'mv 5.1 4.1',
+        'mv 3.3 5.4',
+        'mv 4.1 3.1',
+        'mv 3.7 7.3',
+        'mv 8.4 7.3',
+    ]
+
+    game = Game()
+
+    for command in commands:
+        game.run_command(command)
+
+    assert game.is_end
+    assert game.winner == 'white'
+
 TESTS = [
     test_default_state_is_valid,
     test_turn_changer_works,
@@ -320,6 +343,7 @@ TESTS = [
     test_knight_move_validation_works,
     test_bishop_move_validation_works,
     test_command_back_works,
+    test_checkmate_and_example,
 ]
 
 # running the tests

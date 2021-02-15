@@ -1,4 +1,4 @@
 # TODO
 
-- handle check and checkmate
+- handle check
 - online multi player (on the LAN)
