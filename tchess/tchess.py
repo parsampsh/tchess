@@ -284,6 +284,53 @@ class Game:
 
         return result_msg
 
+    def get_dead_items(self):
+        """ Returns list of dead items like this:
+        {
+            "black": {
+                "pawn": 3, # count
+                "rock": 1
+            },
+            "white": {
+                # ...
+            }
+        }
+        """
+        result = {
+            "white": {},
+            "black": {},
+        }
+        for i in range(0, 8):
+            for j in range(0, 8):
+                if self.board[i][j] is not None:
+                    try:
+                        result[self.board[i][j].color][self.board[i][j].name] += 1
+                    except:
+                        result[self.board[i][j].color][self.board[i][j].name] = 1
+
+        # now, `result` contains live items.
+        # we want dead items
+        for team in result:
+            for item in result[team]:
+                if item == Piece.PAWN:
+                    result[team][item] = 8 - result[team][item]
+                elif item not in ('queen', 'king'):
+                    result[team][item] = 2 - result[team][item]
+                else:
+                    result[team][item] = 1 - result[team][item]
+
+        # delete items contains 0
+        new_result = {
+            "white": {},
+            "black": {},
+        }
+        for team in result:
+            for item in result[team]:
+                if result[team][item] > 0:
+                    new_result[team][item] = result[team][item]
+
+        return new_result
+
     def render(self) -> str:
         """ Renders the board to show in the terminal """
         output = ''
@@ -314,6 +361,28 @@ class Game:
         output = ''
         for line in lines:
             output += ' ' + line + '\n'
+
+        # show dead items
+        dead_items = self.get_dead_items()
+        dead_items_str = 'Deads:\n'
+        for team in dead_items:
+            if dead_items[team]:
+                color = (Ansi.CYAN if team == 'white' else Ansi.RED)
+                current_line = color + team + Ansi.RESET + ': '
+                for item in dead_items[team]:
+                    if item in (Piece.QUEEN, Piece.KING):
+                        current_line += color + item + Ansi.RESET + ', '
+                    else:
+                        current_line += color + str(dead_items[team][item]) + ' ' + item + Ansi.RESET + ', '
+                current_line = current_line.strip().strip(',')
+                current_line += (' ' * (len(self.ROW_SEPARATOR) - len(current_line)))
+                dead_items_str += current_line + '\n'
+
+        if dead_items_str == 'Deads:\n':
+            dead_items_str = ''
+
+        output += dead_items_str.strip()
+
         return output
 
 def show_help():
