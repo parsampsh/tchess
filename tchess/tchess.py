@@ -76,6 +76,8 @@ class Piece:
             result = moves.pawn_move(self, game, src, dst)
         elif self.name == 'rock':
             result = moves.rock_move(self, game, src, dst)
+        elif self.name == 'queen':
+            result = [*moves.rock_move(self, game, src, dst)]
         else:
             if not return_locations:
                 return True
