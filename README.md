@@ -59,6 +59,8 @@ $ tchess [options...] [?game-file-name]
 - `--version|-v`: shows version of the tchess
 - `--no-ansi`: disables the Ansi color chars
 - `--dont-check-terminal`: do not check terminal size
+- `--player-white=[name]`: set name of white player
+- `--player-black=[name]`: set name of black player
 
 ### Game flow
 

@@ -340,8 +340,8 @@ class Game:
         output = ''
 
         # render the player names
-        white_player = self.white_player
-        black_player = self.black_player
+        white_player = 'B. ' + self.white_player
+        black_player = 'W. ' + self.black_player
         white_space_len = (len(self.ROW_SEPARATOR) - (len(white_player)+len(black_player))) - 2
         white_space_len = int(white_space_len/2)
         player_names = Ansi.CYAN + white_player + Ansi.RESET + (' ' * white_space_len) + 'Vs' + (' ' * white_space_len) + Ansi.RED + black_player + Ansi.RESET
@@ -420,6 +420,8 @@ OPTIONS
     --replay: play the saved game
     --replay-speed: delay between play frame (for example `3`(secound) or `0.5`)
     --dont-check-terminal: do not check terminal size
+    --player-white=[name]: set name of white player
+    --player-black=[name]: set name of black player
 
 AUTHOR
     This software is created by Parsa Shahmaleki <parsampsh@gmail.com>
@@ -518,13 +520,22 @@ def run(args=[]):
     if is_play:
         game = Game()
 
+    # set player names
+    for option in options:
+        if option.startswith('--player-white='):
+            game.white_player = option.split('=', 1)[-1]
+        elif option.startswith('--player-black='):
+            game.black_player = option.split('=', 1)[-1]
+
     # last result of runed command
     last_message = ''
 
     while True:
         # render the game board on the terminal
         print('\033[H', end='')
-        title = '*** Welcome to the TChess! ***'
+        title = ' Welcome to the TChess! '
+        stars_len = len(Game.ROW_SEPARATOR) - len(title)
+        title = (int(stars_len/2) * '*') + title + (int(stars_len/2) * '*')
         print(title, end='')
         print(' ' * (len(Game.ROW_SEPARATOR) - len(title)))
         print(' ' * len(Game.ROW_SEPARATOR))
