@@ -56,6 +56,7 @@ $ tchess [options...] [?game-file-name]
 
 ### Cli options
 - `--help`: shows the help
+- `--help --verbose`: show full help
 - `--version|-v`: shows version of the tchess
 - `--no-ansi`: disables the Ansi color chars
 - `--dont-check-terminal`: do not check terminal size
