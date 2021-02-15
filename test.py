@@ -193,6 +193,32 @@ def test_pawn_move_validation_works():
     game.run_command('mv 7.2 6.1')
     assert str_contains_all(game.run_command('s 7.1').lower(), ['piece', 'move', 'cannot'])
 
+def test_rock_move_validation_works():
+    """ Rock move validation working correct """
+    game = Game()
+
+    assert str_contains_all(game.run_command('s 1.1').lower(), ['piece', 'move', 'cannot'])
+    assert str_contains_all(game.run_command('s 8.1').lower(), ['piece', 'move', 'cannot'])
+    game.run_command('mv 2.1 4.1')
+    game.run_command('s 1.1')
+    assert game.highlight_cells == [[1, 0], [2, 0]]
+    game.run_command('mv 7.1 5.1')
+    game.run_command('s 8.1')
+    assert game.highlight_cells == [[6, 0], [5, 0]]
+    game.run_command('mv 1.1 3.1')
+    game.run_command('s 3.1')
+    assert game.highlight_cells == [[1, 0], [0, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7]]
+    game.run_command('mv 8.1 6.1')
+    game.run_command('s 6.1')
+    assert game.highlight_cells == [[6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7]]
+    game.run_command('mv 2.2 4.2')
+    game.run_command('mv 5.1 4.2')
+    game.run_command('s 6.1')
+    assert game.highlight_cells == [[4, 0], [3, 0], [6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7]]
+    game.run_command('mv 3.1 3.2')
+    game.run_command('s 3.2')
+    assert game.highlight_cells == [[3, 1], [1, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7], [2, 0]]
+
 TESTS = [
     test_default_state_is_valid,
     test_turn_changer_works,
@@ -201,6 +227,7 @@ TESTS = [
     test_game_file_system_works,
     test_command_s_works,
     test_pawn_move_validation_works,
+    test_rock_move_validation_works,
 ]
 
 # running the tests

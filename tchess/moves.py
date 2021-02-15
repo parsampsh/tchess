@@ -48,3 +48,43 @@ def pawn_move(self, game, src, dst):
         pass
 
     return result
+
+def rock_move(self, game, src, dst):
+    """ Validates rock move """
+    x = src[0]
+    y = src[1]
+    result = []
+
+    loop_condition = (lambda i: i < 8) if self.color == 'white' else (lambda i: i >= 0)
+    reverse_loop_condition = (lambda i: i < 8) if self.color == 'black' else (lambda i: i >= 0)
+    counter_eval = +1 if self.color == 'white' else -1
+    reverse_counter_eval = -counter_eval
+
+    loops = [
+        [loop_condition, counter_eval],
+        [reverse_loop_condition, reverse_counter_eval]
+    ]
+
+    for loop in loops:
+        i = x
+        while loop[0](i):
+            if i != x:
+                if game.board[i][y] is not None:
+                    if game.board[i][y].color != self.color:
+                        result.append([i, y])
+                    break
+                result.append([i, y])
+            i += loop[1]
+
+    for loop in loops:
+        i = y
+        while loop[0](i):
+            if i != y:
+                if game.board[x][i] is not None:
+                    if game.board[x][i].color != self.color:
+                        result.append([x, i])
+                    break
+                result.append([x, i])
+            i += loop[1]
+
+    return result
