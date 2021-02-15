@@ -88,3 +88,31 @@ def rock_move(self, game, src, dst):
             i += loop[1]
 
     return result
+
+def king_move(self, game, src, dst):
+    """ Validates king move """
+    x = src[0]
+    y = src[1]
+    result = [
+        [x+1, y+1], [x+1, y], [x+1, y-1],
+        [x,   y+1],           [x,   y-1],
+        [x-1, y+1], [x-1, y], [x-1, y-1],
+    ]
+
+    new_result = []
+    i = 0
+    while i < len(result):
+        a = result[i][0]
+        b = result[i][1]
+        if a >= 0 and b >= 0:
+            try:
+                if game.board[a][b] is not None:
+                    if game.board[a][b].color != self.color:
+                        new_result.append(result[i])
+                else:
+                    new_result.append(result[i])
+            except IndexError:
+                pass
+        i += 1
+
+    return new_result

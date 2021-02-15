@@ -219,6 +219,32 @@ def test_rock_move_validation_works():
     game.run_command('s 3.2')
     assert game.highlight_cells == [[3, 1], [1, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7], [2, 0]]
 
+def test_king_move_validation_works():
+    """ King move validation working correct """
+    game = Game()
+    assert str_contains_all(game.run_command('s 1.4').lower(), ['piece', 'move', 'cannot'])
+    assert str_contains_all(game.run_command('s 8.4').lower(), ['piece', 'move', 'cannot'])
+    game.run_command('mv 2.4 4.4')
+    game.run_command('s 1.4')
+    assert game.highlight_cells == [[1, 3]]
+    game.run_command('mv 7.4 5.4')
+    game.run_command('s 8.4')
+    assert game.highlight_cells == [[6, 3]]
+    game.run_command('mv 1.4 2.4')
+    game.run_command('s 2.4')
+    assert game.highlight_cells == [[2, 4], [2, 3], [2, 2], [0, 3]]
+    game.run_command('mv 8.4 7.4')
+    game.run_command('s 7.4')
+    assert game.highlight_cells == [[7, 3], [5, 4], [5, 3], [5, 2]]
+    game.run_command('mv 2.3 4.3')
+    game.run_command('mv 5.4 4.3')
+    game.run_command('mv 4.4 5.4')
+    game.run_command('mv 7.4 6.4')
+    game.run_command('s 6.4')
+    assert game.highlight_cells == [[6, 3], [5, 4], [5, 2], [4, 4], [4, 3], [4, 2]]
+    game.run_command('mv 2.2 3.2')
+    assert str_contains_all(game.run_command('mv 6.4 5.4').lower(), ['moved', 'to'])
+
 TESTS = [
     test_default_state_is_valid,
     test_turn_changer_works,
@@ -228,6 +254,7 @@ TESTS = [
     test_command_s_works,
     test_pawn_move_validation_works,
     test_rock_move_validation_works,
+    test_king_move_validation_works,
 ]
 
 # running the tests

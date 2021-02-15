@@ -78,6 +78,8 @@ class Piece:
             result = moves.rock_move(self, game, src, dst)
         elif self.name == 'queen':
             result = [*moves.rock_move(self, game, src, dst)]
+        elif self.name == 'king':
+            result = moves.king_move(self, game, src, dst)
         else:
             if not return_locations:
                 return True
