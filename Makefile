@@ -13,3 +13,11 @@ test:
 
 all: pylint manpage test
 	-@git status
+
+clean:
+	@rm dist build *.egg-info venv -rf
+
+dep: clean
+	@$(PY) setup.py sdist bdist_wheel
+	# TODO : remove this comment
+	#@$(PY) -m twine upload dist/*
