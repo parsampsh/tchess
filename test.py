@@ -23,11 +23,11 @@ def test_default_state_is_valid():
     assert game.board[2:6] == ([[None] * 8] * 4)
 
     for item in game.board[1]:
-        assert item.name == 'pawn'
+        assert item.name == Piece.PAWN
         assert item.color == 'white'
 
     for item in game.board[6]:
-        assert item.name == 'pawn'
+        assert item.name == Piece.PAWN
         assert item.color == 'black'
 
     colors = [

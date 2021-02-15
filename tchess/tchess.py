@@ -314,7 +314,7 @@ class Game:
             for item in result[team]:
                 if item == Piece.PAWN:
                     result[team][item] = 8 - result[team][item]
-                elif item not in ('queen', 'king'):
+                elif item not in (Piece.QUEEN, Piece.KING):
                     result[team][item] = 2 - result[team][item]
                 else:
                     result[team][item] = 1 - result[team][item]
