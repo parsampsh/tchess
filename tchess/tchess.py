@@ -200,7 +200,6 @@ class Game:
                                                 self.checkmate()
                                             else:
                                                 self.check(self.board[item[0]][item[1]].color)
-        self.beep()
 
     def checkmate(self):
         """ Changes game status to the checkmate """
