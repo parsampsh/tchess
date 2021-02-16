@@ -19,5 +19,4 @@ clean:
 
 dep: clean
 	@$(PY) setup.py sdist bdist_wheel
-	# TODO : remove this comment
 	#@$(PY) -m twine upload dist/*
