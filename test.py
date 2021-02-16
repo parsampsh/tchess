@@ -6,6 +6,8 @@ import os
 import subprocess
 from tchess import Game, Piece, load_game_from_file
 
+Game.IS_TEST = True
+
 PY_EXE = 'python3'
 if os.name == 'nt':
     PY_EXE = 'python'

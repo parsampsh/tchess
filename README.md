@@ -62,6 +62,7 @@ $ tchess [options...] [?game-file-name]
 - `--dont-check-terminal`: do not check terminal size
 - `--player-white=[name]`: set name of white player
 - `--player-black=[name]`: set name of black player
+- `--no-beep`: do not play beep sound
 
 ### Game flow
 

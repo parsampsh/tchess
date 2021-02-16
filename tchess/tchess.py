@@ -99,6 +99,7 @@ class Game:
 
     ROW_SEPARATOR = ('|-----------'*8) + '|\n'
     CELL_WIDTH = 10
+    IS_TEST = False
 
     def __init__(self):
         self.turn = 'white'
@@ -127,6 +128,9 @@ class Game:
 
         # currently which team is check
         self.current_check = None
+
+        # if this is True, beep sound will be enabled
+        self.enable_beep = True
 
         # initialize the board
         self.board = []
@@ -166,6 +170,12 @@ class Game:
                 else:
                     self.board[-1].append(None)
 
+    def beep(self):
+        """ Plays a beep sound """
+        if self.enable_beep:
+            if not Game.IS_TEST:
+                print('\a', end='')
+
     def change_turn(self):
         """ Changes the turn.
 
@@ -190,18 +200,22 @@ class Game:
                                                 self.checkmate()
                                             else:
                                                 self.check(self.board[item[0]][item[1]].color)
+        self.beep()
 
     def checkmate(self):
         """ Changes game status to the checkmate """
         self.is_end = True
         self.winner = self.turn
+        self.beep()
 
     def check(self, color):
         """ Sets check status for a color """
         self.current_check = color
+        self.beep()
 
     def move(self, src, dst):
         """ Moves src to dst """
+        self.beep()
         dst_p = copy.deepcopy(self.board[dst[0]][dst[1]])
         src_p = copy.deepcopy(self.board[src[0]][src[1]])
 
@@ -221,6 +235,8 @@ class Game:
 
     def run_command(self, cmd: str) -> str:
         """ Gets a command as string and runs that on the game. Returns result message as string """
+        self.beep()
+
         cmd_parts = cmd.split()
 
         self.highlight_cells = []
@@ -461,6 +477,7 @@ OPTIONS
     --dont-check-terminal: do not check terminal size
     --player-white=[name]: set name of white player
     --player-black=[name]: set name of black player
+    --no-beep: do not play beep sound
 
 AUTHOR
     This software is created by Parsa Shahmaleki <parsampsh@gmail.com>
@@ -677,6 +694,9 @@ def run(args=[]):
             game.white_player = option.split('=', 1)[-1]
         elif option.startswith('--player-black='):
             game.black_player = option.split('=', 1)[-1]
+
+    if '--no-beep' in options:
+        game.enable_beep = False
 
     # last result of runed command
     last_message = ''
