@@ -391,8 +391,10 @@ class Game:
                     column_str = str(column)
                     ansi_color = Ansi.CYAN if column.color == 'white' else Ansi.RED
                     ansi_reset = Ansi.RESET
-                if [i, j] in self.highlight_cells or self.selected_cell == [i, j]:
+                if [i, j] in self.highlight_cells:
                     column_str = '*' + column_str.lstrip() + '*'
+                elif self.selected_cell == [i, j]:
+                    column_str = '<' + column_str.lstrip() + '>'
                 output += '| ' + ansi_color + column_str + ansi_reset + (' ' * (self.CELL_WIDTH-len(column_str)))
                 j += 1
             output += '|\n'
