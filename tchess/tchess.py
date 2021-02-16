@@ -125,6 +125,9 @@ class Game:
         self.is_end = False
         self.winner = None
 
+        # currently which team is check
+        self.current_check = None
+
         # initialize the board
         self.board = []
         for i in range(8):
@@ -170,24 +173,32 @@ class Game:
         """
         self.turn = 'black' if self.turn == 'white' else 'white'
 
-        self.handle_checkmate()
+        self.handle_check()
 
-    def handle_checkmate(self):
-        """ Handle the checkmate """
-        for i in range(0, len(self.board)):
-            for j in range(0, len(self.board[i])):
-                if self.board[i][j] is not None:
-                    if self.board[i][j].color == self.turn:
-                        for item in self.board[i][j].allowed_moves(self, [i, j], [0, 0], return_locations=True):
-                            if self.board[item[0]][item[1]] is not None:
-                                if self.board[item[0]][item[1]].color != self.turn:
-                                    if self.board[item[0]][item[1]].name == Piece.KING:
-                                        self.checkmate()
+    def handle_check(self):
+        """ Handle the check and checkmate """
+        for color in ('white', 'black'):
+            for i in range(0, len(self.board)):
+                for j in range(0, len(self.board[i])):
+                    if self.board[i][j] is not None:
+                        if self.board[i][j].color == color:
+                            for item in self.board[i][j].allowed_moves(self, [i, j], [0, 0], return_locations=True):
+                                if self.board[item[0]][item[1]] is not None:
+                                    if self.board[item[0]][item[1]].color != color:
+                                        if self.board[item[0]][item[1]].name == Piece.KING:
+                                            if color == self.turn:
+                                                self.checkmate()
+                                            else:
+                                                self.check(self.board[item[0]][item[1]].color)
 
     def checkmate(self):
         """ Changes game status to the checkmate """
         self.is_end = True
         self.winner = self.turn
+
+    def check(self, color):
+        """ Sets check status for a color """
+        self.current_check = color
 
     def move(self, src, dst):
         """ Moves src to dst """
@@ -365,8 +376,8 @@ class Game:
         output = ''
 
         # render the player names
-        white_player = 'B. ' + self.white_player
-        black_player = 'W. ' + self.black_player
+        white_player = 'B. ' + self.white_player + (' (Check!)' if 'white' == self.current_check else '')
+        black_player = 'W. ' + self.black_player + (' (Check!)' if 'black' == self.current_check else '')
         white_space_len = (len(self.ROW_SEPARATOR) - (len(white_player)+len(black_player))) - 2
         white_space_len = int(white_space_len/2)
         player_names = Ansi.CYAN + white_player + Ansi.RESET + (' ' * white_space_len) + 'Vs' + (' ' * white_space_len) + Ansi.RED + black_player + Ansi.RESET
@@ -572,6 +583,7 @@ def load_game_from_file(path: str):
     game.board = list(file_game.board)
     game.is_end = bool(file_game.is_end)
     game.winner = file_game.winner
+    game.current_check = file_game.current_check
     return game
 
 def run(args=[]):

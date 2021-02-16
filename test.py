@@ -319,13 +319,17 @@ def test_checkmate_and_example():
         'mv 3.3 5.4',
         'mv 4.1 3.1',
         'mv 3.7 7.3',
-        'mv 8.4 7.3',
     ]
 
     game = Game()
 
     for command in commands:
+        assert game.current_check is None
         game.run_command(command)
+
+    assert game.current_check == 'black'
+
+    game.run_command('mv 8.4 7.3',)
 
     assert game.is_end
     assert game.winner == 'white'
