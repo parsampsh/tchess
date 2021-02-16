@@ -688,6 +688,7 @@ def run(args=[]):
                 game.is_end = False
                 game.winner = None
                 game.run_command('back')
+                continue
             else:
                 break
 
