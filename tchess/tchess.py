@@ -16,19 +16,16 @@ except ImportError:
     import moves
 
 try:
-<<<<<<< HEAD
     import karafs
 except:
     pass
 
-VERSION = '0.0.8'
-=======
+try:
     from . import server
 except ImportError:
     import server
 
 VERSION = '0.0.17'
->>>>>>> master
 
 class Ansi:
     """ The terminal ansi chars """
