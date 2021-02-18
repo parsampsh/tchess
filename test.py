@@ -6,6 +6,8 @@ import os
 import subprocess
 from tchess import Game, Piece, load_game_from_file
 
+Game.IS_TEST = True
+
 PY_EXE = 'python3'
 if os.name == 'nt':
     PY_EXE = 'python'
@@ -207,17 +209,25 @@ def test_rock_move_validation_works():
     assert game.highlight_cells == [[6, 0], [5, 0]]
     game.run_command('mv 1.1 3.1')
     game.run_command('s 3.1')
-    assert game.highlight_cells == [[1, 0], [0, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7]]
+    assert game.highlight_cells == [
+        [1, 0], [0, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7]
+    ]
     game.run_command('mv 8.1 6.1')
     game.run_command('s 6.1')
-    assert game.highlight_cells == [[6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7]]
+    assert game.highlight_cells == [
+        [6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7]
+    ]
     game.run_command('mv 2.2 4.2')
     game.run_command('mv 5.1 4.2')
     game.run_command('s 6.1')
-    assert game.highlight_cells == [[4, 0], [3, 0], [6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7]]
+    assert game.highlight_cells == [
+        [4, 0], [3, 0], [6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7]
+    ]
     game.run_command('mv 3.1 3.2')
     game.run_command('s 3.2')
-    assert game.highlight_cells == [[3, 1], [1, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7], [2, 0]]
+    assert game.highlight_cells == [
+        [3, 1], [1, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7], [2, 0]
+    ]
 
 def test_king_move_validation_works():
     """ King move validation working correct """
@@ -258,6 +268,36 @@ def test_knight_move_validation_works():
     game.run_command('mv 7.2 5.2')
     assert str_contains_all(game.run_command('mv 3.3 5.2').lower(), ['moved', 'to'])
 
+def test_bishop_move_validation_works():
+    """ Bishop move validation working correct """
+    game = Game()
+
+    assert str_contains_all(game.run_command('s 1.3'), ['cannot', 'move'])
+    assert str_contains_all(game.run_command('s 8.6'), ['cannot', 'move'])
+
+    game.run_command('mv 2.4 3.4')
+    game.run_command('s 1.3')
+    assert game.highlight_cells == [[1, 3], [2, 4], [3, 5], [4, 6], [5, 7]]
+    game.run_command('mv 7.1 6.1')
+    game.run_command('mv 1.3 4.6')
+    game.run_command('s 4.6')
+    assert game.highlight_cells == [
+        [4, 6], [5, 7], [2, 4], [1, 3], [0, 2], [2, 6], [4, 4], [5, 3], [6, 2]
+    ]
+    game.run_command('mv 7.4 6.4')
+    game.run_command('mv 4.6 6.4')
+    assert game.board[3][5] is None
+    assert game.board[5][3].name == Piece.BISHOP
+    game.run_command('s 8.3')
+    assert game.highlight_cells == [[6, 3], [5, 4], [4, 5], [3, 6], [2, 7]]
+    game.run_command('mv 8.3 5.6')
+    game.run_command('s 5.6')
+    assert game.highlight_cells == [[3, 4], [2, 3], [5, 6], [5, 4], [6, 3], [7, 2], [3, 6], [2, 7]]
+    game.run_command('mv 2.1 3.1')
+    game.run_command('mv 5.6 3.4')
+    assert game.board[4][5] is None
+    assert game.board[2][3].name == Piece.BISHOP
+
 def test_command_back_works():
     """ Command `back` works """
     game = Game()
@@ -279,6 +319,33 @@ def test_command_back_works():
     game = Game()
     assert str_contains_all(game.run_command('back'), ['first', 'move'])
 
+def test_checkmate_and_example():
+    """ Checkmate works with a example """
+    commands = [
+        'mv 2.6 3.6',
+        'mv 7.1 6.1',
+        'mv 1.5 3.7',
+        'mv 6.1 5.1',
+        'mv 1.2 3.3',
+        'mv 5.1 4.1',
+        'mv 3.3 5.4',
+        'mv 4.1 3.1',
+        'mv 3.7 7.3',
+    ]
+
+    game = Game()
+
+    for command in commands:
+        assert game.current_check is None
+        game.run_command(command)
+
+    assert game.current_check == 'black'
+
+    game.run_command('mv 8.4 7.3',)
+
+    assert game.is_end
+    assert game.winner == 'white'
+
 TESTS = [
     test_default_state_is_valid,
     test_turn_changer_works,
@@ -290,7 +357,9 @@ TESTS = [
     test_rock_move_validation_works,
     test_king_move_validation_works,
     test_knight_move_validation_works,
+    test_bishop_move_validation_works,
     test_command_back_works,
+    test_checkmate_and_example,
 ]
 
 # running the tests

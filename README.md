@@ -32,6 +32,7 @@ Command `python3 tchess` will run the tchess.
 
 Tchess can save your game in a file, then you can continue that game later.
 If you run the above command, game will be saved in `game.tchess` file in current working directory.
+Also Tchess can handle online multiplayer game on local network (P2P).
 
 But you can customize the file:
 
@@ -56,11 +57,19 @@ $ tchess [options...] [?game-file-name]
 
 ### Cli options
 - `--help`: shows the help
+- `--help --verbose`: show full help
 - `--version|-v`: shows version of the tchess
 - `--no-ansi`: disables the Ansi color chars
 - `--dont-check-terminal`: do not check terminal size
 - `--player-white=[name]`: set name of white player
 - `--player-black=[name]`: set name of black player
+- `--no-beep`: do not play beep sound
+- `--online`: serve a online game
+- `--online --host=[host]`: set host of online game
+- `--online --port=[port]`: set port of online game
+- `--online --guest-color=[color]`: color of guest player (black or white)
+- `--connect [host]:[port]`: connect to a online game
+- `--connect --name=[name]`: set your name white joining to a game
 
 ### Game flow
 
@@ -149,6 +158,8 @@ You can revert your moves and back to the previous status.
 
 This is useful if you insert a wrong command or move wrong.
 
+(This command will be disabled for guest in online mode)
+
 ### Replaying a saved game
 If you played a game and it is saved, you can play that!
 
@@ -169,8 +180,71 @@ $ tchess --replay my-saved-game.file --replay-speed=0.5
 
 (sort of options is not important).
 
+### Online multiplayer
+By default, Tchess runs a offline game for you that you should play on one terminal.
+Means both of players should use one computer alongside together.
+
+But you can play with your friend with two computers (on local network).
+
+Means one player will be **Server** and othe player will be **guest**.
+
+Game will be handled by Server computer. and guest will be connected to server and play.
+
+To serve a game, run this command:
+
+```bash
+$ tchess --online
+# OR
+$ tchess --online --port=<port> --host=<host>
+# Example
+$ tchess --online --port=5000 --host=0.0.0.0
+```
+
+then, the guest player can join the game by running this command:
+
+```bash
+$ tchess --connect <host>:<port>
+# Example
+$ tchess --connect 192.168.1.2:5000
+```
+
+Also guest can determine the name:
+
+```bash
+$ tchess --connect 192.168.1.2:5000 --name="guest name"
+```
+
+Also server player can use more options:
+
+```bash
+# set color of guest player (default is black)
+$ tchess --online --guest-color=white
+```
+
+### Manpage
+If you want to see the tchess manpage, run this command after installation via pip:
+
+```bash
+$ man tchess
+```
+
+or if you want to see manpage from source code, run:
+
+```bash
+$ cd /path/to/tchess
+$ man -l man/tchess.1
+```
+
 ## Development
-If you are developing this software, you can run the tests using `test.py`:
+To start development environment:
+
+```bash
+$ virtualenv venv -p python3
+$ source venv/bin/activate
+$ pip3 install -r requirements.txt
+```
+
+For running tests:
 
 ```bash
 $ python3 test.py
@@ -197,3 +271,11 @@ For using **pylint** to check code quality, you can use make:
 ```bash
 $ make pylint
 ```
+
+For generating manual page(man) in the `man/tchess.1`, you can run:
+
+```bash
+$ ./bin/generate-man-page.py
+```
+
+(This is possible ONLY on Unix systems).

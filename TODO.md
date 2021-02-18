@@ -1,5 +1,3 @@
 # TODO
 
-- validate move of bishop
-- handle check and checkmate
-- online multi player (on the LAN)
+- use karafs library to generate random default names for players

@@ -18,6 +18,7 @@ setuptools.setup(
     url="https://github.com/parsampsh/tchess",
     packages=setuptools.find_packages(),
     scripts=['bin/tchess'],
+    data_files = [('man/man1', ['man/tchess.1']),],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
@@ -25,4 +26,9 @@ setuptools.setup(
     ],
     install_requires=['karafs>=0.1'],
     python_requires='>=3.6',
+    install_requires=[
+        'Flask >= 1.1',
+        'requests >= 2.0',
+        'karafs >= 0.1',
+    ]
 )
