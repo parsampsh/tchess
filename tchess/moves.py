@@ -176,7 +176,7 @@ def bishop_move(self, game, src):
                         if game.board[i][j].color != self.color:
                             result.append([i, j])
                         break
-                except:
+                except IndexError:
                     break
                 result.append([i, j])
             i += loop[1]
@@ -192,7 +192,7 @@ def bishop_move(self, game, src):
                         if game.board[i][j].color != self.color:
                             result.append([i, j])
                         break
-                except:
+                except IndexError:
                     break
                 result.append([i, j])
             i += -loop[1]

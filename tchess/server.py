@@ -30,7 +30,9 @@ def serve(game_object, host='0.0.0.0', port=8799):
                 game_object.black_player = guess_name
         except:
             guess_name = 'Unknow'
-        if input('User `' + guess_name + '` wants to play. Do you accept? [y/n] ') not in ('y', 'Y'):
+        if input(
+            'User `' + guess_name + '` wants to play. Do you accept? [y/n] '
+        ) not in ('y', 'Y'):
             print('Rejected.')
             return Response('Rejected', status=403)
 
@@ -50,8 +52,7 @@ def serve(game_object, host='0.0.0.0', port=8799):
             if request.args['session'] == CURRENT_SESSION:
                 # render the game
                 return game_object.guess_color
-            else:
-                raise
+            raise
         except:
             return Response('invalid session', status=401)
 
@@ -64,8 +65,7 @@ def serve(game_object, host='0.0.0.0', port=8799):
             if request.args['session'] == CURRENT_SESSION:
                 # render the game and turn
                 return game_object.turn + '\n' + game_object.render()
-            else:
-                raise
+            raise
         except:
             return Response('invalid session', status=401)
 
@@ -79,10 +79,8 @@ def serve(game_object, host='0.0.0.0', port=8799):
                 # put the command on the game object
                 game_object.guess_ran = game_object.run_command(request.args['cmd'])
                 return game_object.guess_ran
-            else:
-                raise ValueError()
+            raise ValueError()
         except:
-            raise
             return Response('invalid session', status=401)
 
     print('Serving on ' + host + ':' + str(port))

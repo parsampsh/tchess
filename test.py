@@ -209,17 +209,25 @@ def test_rock_move_validation_works():
     assert game.highlight_cells == [[6, 0], [5, 0]]
     game.run_command('mv 1.1 3.1')
     game.run_command('s 3.1')
-    assert game.highlight_cells == [[1, 0], [0, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7]]
+    assert game.highlight_cells == [
+        [1, 0], [0, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7]
+    ]
     game.run_command('mv 8.1 6.1')
     game.run_command('s 6.1')
-    assert game.highlight_cells == [[6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7]]
+    assert game.highlight_cells == [
+        [6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7]
+    ]
     game.run_command('mv 2.2 4.2')
     game.run_command('mv 5.1 4.2')
     game.run_command('s 6.1')
-    assert game.highlight_cells == [[4, 0], [3, 0], [6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7]]
+    assert game.highlight_cells == [
+        [4, 0], [3, 0], [6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7]
+    ]
     game.run_command('mv 3.1 3.2')
     game.run_command('s 3.2')
-    assert game.highlight_cells == [[3, 1], [1, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7], [2, 0]]
+    assert game.highlight_cells == [
+        [3, 1], [1, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7], [2, 0]
+    ]
 
 def test_king_move_validation_works():
     """ King move validation working correct """
@@ -273,7 +281,9 @@ def test_bishop_move_validation_works():
     game.run_command('mv 7.1 6.1')
     game.run_command('mv 1.3 4.6')
     game.run_command('s 4.6')
-    assert game.highlight_cells == [[4, 6], [5, 7], [2, 4], [1, 3], [0, 2], [2, 6], [4, 4], [5, 3], [6, 2]]
+    assert game.highlight_cells == [
+        [4, 6], [5, 7], [2, 4], [1, 3], [0, 2], [2, 6], [4, 4], [5, 3], [6, 2]
+    ]
     game.run_command('mv 7.4 6.4')
     game.run_command('mv 4.6 6.4')
     assert game.board[3][5] is None
