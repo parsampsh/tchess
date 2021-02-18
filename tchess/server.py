@@ -22,11 +22,17 @@ def serve(game_object, host='0.0.0.0', port=8799):
             return Response('session currently started', status=401)
 
         # get user confirmation
-        # TODO : show name of user
-        if input('User wants to play. Do you accept? [y/n] ') not in ('y', 'Y'):
+        try:
+            guess_name = request.args['name']
+            if game_object.guess_color == 'white':
+                game_object.white_player = guess_name
+            else:
+                game_object.black_player = guess_name
+        except:
+            guess_name = 'Unknow'
+        if input('User `' + guess_name + '` wants to play. Do you accept? [y/n] ') not in ('y', 'Y'):
+            print('Rejected.')
             return Response('Rejected', status=403)
-
-        print('Accepted.')
 
         game_object.guess_connected = True
 

@@ -488,6 +488,7 @@ OPTIONS
     --online --host=[host]: set host of online game
     --online --port=[port]: set port of online game
     --online --guess-color=[color]: color of guess player (black or white)
+    --online --name=[name]: set your name white joining to a game
 
 AUTHOR
     This software is created by Parsa Shahmaleki <parsampsh@gmail.com>
@@ -615,12 +616,20 @@ def load_game_from_file(path: str):
 
 def online_connect(target, options=[], arguments=[]):
     """ Connects user to a served game """
+    my_name = None
+    for option in options:
+        if option.startswith('--name='):
+            my_name = option.split('=', 1)[1]
+
     target = 'http://' + target
     session_id = None
     my_color = None
     try:
         print('Waiting for server confirmation...')
-        res = requests.get(target + '/connect')
+        connect_args = {}
+        if my_name is not None:
+            connect_args['name'] = my_name
+        res = requests.get(target + '/connect', connect_args)
         if not res.ok:
             print('ERROR: invalid response from server: ' + str(res.status_code) + ': ' + res.text, file=sys.stderr)
             sys.exit(1)
@@ -772,16 +781,15 @@ def run(args=[]):
     last_message = ''
 
     is_online = False
-    game.guess_color = None
+    game.guess_color = 'black'
     if '--online' in options:
-        is_online = True
-        print('Server is served, waiting for guess...')
-        game.guess_color = 'black'
         for option in options:
             if option.startswith('--guess-color='):
                 game.guess_color = option.split('=', 1)[1].lower()
                 if game.guess_color != 'white':
                     game.guess_color = 'black'
+        is_online = True
+        print('Server is served, waiting for guess...')
         game.guess_ran = False
         game.guess_connected = False
         host = '0.0.0.0'
