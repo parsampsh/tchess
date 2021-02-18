@@ -20,7 +20,7 @@ try:
 except ImportError:
     import server
 
-VERSION = '0.0.16'
+VERSION = '0.0.17'
 
 class Ansi:
     """ The terminal ansi chars """
