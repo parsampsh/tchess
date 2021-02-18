@@ -26,8 +26,8 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        'Flask >= 1.1.2',
-        'requests >= 2.25.1',
+        'Flask >= 1.1',
+        'requests >= 2.0',
         'karafs >= 0.1',
     ]
 )
