@@ -63,6 +63,9 @@ $ tchess [options...] [?game-file-name]
 - `--player-white=[name]`: set name of white player
 - `--player-black=[name]`: set name of black player
 - `--no-beep`: do not play beep sound
+- `--online`: serve a online game
+- `--online --host=[host]`: set host of online game
+- `--online --port=[port]`: set port of online game
 
 ### Game flow
 

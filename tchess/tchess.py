@@ -7,11 +7,17 @@ import sys
 import os
 import copy
 import time
+import threading
 
 try:
     from . import moves
 except ImportError:
     import moves
+
+try:
+    from . import server
+except ImportError:
+    import server
 
 VERSION = '0.0.14'
 
@@ -477,6 +483,9 @@ OPTIONS
     --player-white=[name]: set name of white player
     --player-black=[name]: set name of black player
     --no-beep: do not play beep sound
+    --online: serve a online game
+    --online --host=[host]: set host of online game
+    --online --port=[port]: set port of online game
 
 AUTHOR
     This software is created by Parsa Shahmaleki <parsampsh@gmail.com>
@@ -700,6 +709,33 @@ def run(args=[]):
     # last result of runed command
     last_message = ''
 
+    is_online = False
+    game.guess_color = None
+    if '--online' in options:
+        is_online = True
+        print('Server is served, waiting for guess...')
+        # TODO : allow commandline to change guess color
+        game.guess_color = 'black'
+        game.guess_ran = False
+        game.guess_connected = False
+        host = '0.0.0.0'
+        port = 8799
+        for option in options:
+            if option.startswith('--host='):
+                host = option.split('=', 1)[1]
+            elif option.startswith('--port='):
+                try:
+                    port = int(option.split('=', 1)[1])
+                except:
+                    pass
+        server_thread = threading.Thread(target=server.serve, args=[game, host, port])
+        server_thread.daemon = True
+        server_thread.start()
+
+        # wait for connection
+        while not game.guess_connected:
+            pass
+
     while True:
         # render the game board on the terminal
         print('\033[H', end='')
@@ -741,7 +777,15 @@ def run(args=[]):
                 sys.exit()
             log_counter += 1
         else:
-            command = input(ansi_color + game.turn + Ansi.RESET + ' Turn >>> ').strip().lower()
+            if is_online and game.turn == game.guess_color:
+                print('Waiting for guess command...')
+                while not game.guess_ran:
+                    pass
+                print(game.guess_ran)
+                game.guess_ran = False
+                continue
+            else:
+                command = input(ansi_color + game.turn + Ansi.RESET + ' Turn >>> ').strip().lower()
 
         game.highlight_cells = []
         game.selected_cell = None
