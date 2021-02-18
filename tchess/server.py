@@ -57,7 +57,7 @@ def serve(game_object, host='0.0.0.0', port=8799):
         try:
             if request.args['session'] == CURRENT_SESSION:
                 # render the game and turn
-                return game.turn + '\n' + game_object.render()
+                return game_object.turn + '\n' + game_object.render()
             else:
                 raise
         except:
