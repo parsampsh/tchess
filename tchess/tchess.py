@@ -8,6 +8,7 @@ import os
 import copy
 import time
 import threading
+import requests
 
 try:
     from . import moves
@@ -611,6 +612,57 @@ def load_game_from_file(path: str):
     game.current_check = file_game.current_check
     return game
 
+def online_connect(target, options=[], arguments=[]):
+    """ Connects user to a served game """
+    target = 'http://' + target
+    session_id = None
+    my_color = None
+    try:
+        print('Waiting for server confirmation...')
+        res = requests.get(target + '/connect')
+        if not res.ok:
+            print('ERROR: invalid response from server: ' + str(res.status_code) + ': ' + res.text, file=sys.stderr)
+            sys.exit(1)
+
+        session_id = res.text.strip()
+        if session_id == '':
+            session_id = None
+
+        if session_id is None:
+            print('ERROR: invalid session id', file=sys.stderr)
+            sys.exit(1)
+
+        # get my color
+        try:
+            my_color = requests.get(target + '/me', {'session': session_id}).text.strip()
+        except:
+            print('ERROR: error while getting guess color', file=sys.stderr)
+            sys.exit(1)
+    except:
+        print('ERROR: cannot make http connection to the target', file=sys.stderr)
+        sys.exit(1)
+
+    while True:
+        print('\033[H', end='')
+        try:
+            render = requests.get(target + '/render', {'session': session_id}).text
+            render = render.split('\n', 1)
+            turn = render[0]
+            render = render[1]
+            print(render)
+            if turn == my_color:
+                command = input(turn + ' Turn >>> ').strip()
+                if command == '':
+                    continue
+                cmd_res = requests.get(target + '/command', {'session': session_id, 'cmd': command})
+                print(cmd_res.text)
+        except KeyboardInterrupt:
+            break
+        except:
+            print('WARNING: unable to connect to server. retrying...', file=sys.stderr)
+            continue
+        time.sleep(0.5)
+
 def run(args=[]):
     """ The main cli entry point """
 
@@ -635,6 +687,15 @@ def run(args=[]):
     if '--no-ansi' in options:
         options.remove('--no-ansi')
         Ansi.disable()
+
+    # handle `--connect`
+    if '--connect' in options:
+        if len(arguments) <= 0:
+            print('ERROR: <host>:<port> argument is required', file=sys.stderr)
+            sys.exit(1)
+        target = arguments[0]
+        online_connect(target, options, arguments)
+        return
 
     # handle `--replay` option
     is_play = False
