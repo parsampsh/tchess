@@ -67,7 +67,8 @@ $ tchess [options...] [?game-file-name]
 - `--online --host=[host]`: set host of online game
 - `--online --port=[port]`: set port of online game
 - `--online --guess-color=[color]`: color of guess player (black or white)
-- `--online --name=[name]`: set your name white joining to a game
+- `--connect [host]:[port]`: connect to a online game
+- `--connect --name=[name]`: set your name white joining to a game
 
 ### Game flow
 
