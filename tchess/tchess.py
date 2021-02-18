@@ -594,6 +594,39 @@ GAME
         $ tchess --replay my-saved-game.file --replay-speed=0.5
 
         (sort of options is not important).
+
+        Online multiplayer
+
+        By default, Tchess runs a offline game for you that you should play on one terminal. Means both of players should use one computer alongside together.
+
+        But you can play with your friend with two computers (on local network).
+
+        Means one player will be Server and othe player will be Guess.
+
+        Game will be handled by Server computer. and guess will be connected to server and play.
+
+        To serve a game, run this command:
+
+        $ tchess --online
+        # OR
+        $ tchess --online --port=<port> --host=<host>
+        # Example
+        $ tchess --online --port=5000 --host=0.0.0.0
+
+        then, the guess player can join the game by running this command:
+
+        $ tchess --connect <host>:<port>
+        # Example
+        $ tchess --connect 192.168.1.2:5000
+
+        Also guess can determine the name:
+
+        $ tchess --connect 192.168.1.2:5000 --name="Guess name"
+
+        Also server player can use more options:
+
+        # set color of guess player (default is black)
+        $ tchess --online --guess-color=white
 '''.strip())
 
 def load_game_from_file(path: str):
