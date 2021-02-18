@@ -487,6 +487,7 @@ OPTIONS
     --online: serve a online game
     --online --host=[host]: set host of online game
     --online --port=[port]: set port of online game
+    --online --guess-color=[color]: color of guess player (black or white)
 
 AUTHOR
     This software is created by Parsa Shahmaleki <parsampsh@gmail.com>
@@ -775,8 +776,12 @@ def run(args=[]):
     if '--online' in options:
         is_online = True
         print('Server is served, waiting for guess...')
-        # TODO : allow commandline to change guess color
         game.guess_color = 'black'
+        for option in options:
+            if option.startswith('--guess-color='):
+                game.guess_color = option.split('=', 1)[1].lower()
+                if game.guess_color != 'white':
+                    game.guess_color = 'black'
         game.guess_ran = False
         game.guess_connected = False
         host = '0.0.0.0'
