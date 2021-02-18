@@ -186,7 +186,15 @@ $ man -l man/tchess.1
 ```
 
 ## Development
-If you are developing this software, you can run the tests using `test.py`:
+To start development environment:
+
+```bash
+$ virtualenv venv -p python3
+$ source venv/bin/activate
+$ pip3 install -r requirements.txt
+```
+
+For running tests:
 
 ```bash
 $ python3 test.py

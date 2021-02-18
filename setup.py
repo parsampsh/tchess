@@ -25,4 +25,9 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License"
     ],
     python_requires='>=3.6',
+    install_requires=[
+        'Flask >= 1.1.2',
+        'requests >= 2.25.1',
+        'karafs >= 0.1',
+    ]
 )
