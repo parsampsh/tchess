@@ -11,7 +11,7 @@ manpage:
 test:
 	@$(PY) test.py
 
-all: pylint manpage test
+all: manpage test
 	-@git status
 
 clean:
