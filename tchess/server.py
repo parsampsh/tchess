@@ -34,6 +34,21 @@ def serve(game_object, host='0.0.0.0', port=8799):
         CURRENT_SESSION = str(uuid.uuid4())
         return CURRENT_SESSION
 
+    @app.route('/me')
+    def me():
+        # return name of guess
+        if CURRENT_SESSION is None:
+            return Response('Please start a session first', status=401)
+
+        try:
+            if request.args['session'] == CURRENT_SESSION:
+                # render the game
+                return game_object.guess_color
+            else:
+                raise
+        except:
+            return Response('invalid session', status=401)
+
     @app.route('/render')
     def render():
         if CURRENT_SESSION is None:
