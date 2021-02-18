@@ -67,7 +67,7 @@ $ tchess [options...] [?game-file-name]
 - `--online`: serve a online game
 - `--online --host=[host]`: set host of online game
 - `--online --port=[port]`: set port of online game
-- `--online --guess-color=[color]`: color of guess player (black or white)
+- `--online --guest-color=[color]`: color of guest player (black or white)
 - `--connect [host]:[port]`: connect to a online game
 - `--connect --name=[name]`: set your name white joining to a game
 
@@ -158,6 +158,8 @@ You can revert your moves and back to the previous status.
 
 This is useful if you insert a wrong command or move wrong.
 
+(This command will be disabled for guest in online mode)
+
 ### Replaying a saved game
 If you played a game and it is saved, you can play that!
 
@@ -184,9 +186,9 @@ Means both of players should use one computer alongside together.
 
 But you can play with your friend with two computers (on local network).
 
-Means one player will be **Server** and othe player will be **Guess**.
+Means one player will be **Server** and othe player will be **guest**.
 
-Game will be handled by Server computer. and guess will be connected to server and play.
+Game will be handled by Server computer. and guest will be connected to server and play.
 
 To serve a game, run this command:
 
@@ -198,7 +200,7 @@ $ tchess --online --port=<port> --host=<host>
 $ tchess --online --port=5000 --host=0.0.0.0
 ```
 
-then, the guess player can join the game by running this command:
+then, the guest player can join the game by running this command:
 
 ```bash
 $ tchess --connect <host>:<port>
@@ -206,17 +208,17 @@ $ tchess --connect <host>:<port>
 $ tchess --connect 192.168.1.2:5000
 ```
 
-Also guess can determine the name:
+Also guest can determine the name:
 
 ```bash
-$ tchess --connect 192.168.1.2:5000 --name="Guess name"
+$ tchess --connect 192.168.1.2:5000 --name="guest name"
 ```
 
 Also server player can use more options:
 
 ```bash
-# set color of guess player (default is black)
-$ tchess --online --guess-color=white
+# set color of guest player (default is black)
+$ tchess --online --guest-color=white
 ```
 
 ### Manpage

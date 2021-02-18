@@ -23,20 +23,20 @@ def serve(game_object, host='0.0.0.0', port=8799):
 
         # get user confirmation
         try:
-            guess_name = request.args['name']
-            if game_object.guess_color == 'white':
-                game_object.white_player = guess_name
+            guest_name = request.args['name']
+            if game_object.guest_color == 'white':
+                game_object.white_player = guest_name
             else:
-                game_object.black_player = guess_name
+                game_object.black_player = guest_name
         except:
-            guess_name = 'Unknow'
+            guest_name = 'Unknow'
         if input(
-            'User `' + guess_name + '` wants to play. Do you accept? [y/n] '
+            'User `' + guest_name + '` wants to play. Do you accept? [y/n] '
         ) not in ('y', 'Y'):
             print('Rejected.')
             return Response('Rejected', status=403)
 
-        game_object.guess_connected = True
+        game_object.guest_connected = True
 
         # start the session
         CURRENT_SESSION = str(uuid.uuid4())
@@ -44,14 +44,14 @@ def serve(game_object, host='0.0.0.0', port=8799):
 
     @app.route('/me')
     def me():
-        # return name of guess
+        # return name of guest
         if CURRENT_SESSION is None:
             return Response('Please start a session first', status=401)
 
         try:
             if request.args['session'] == CURRENT_SESSION:
                 # render the game
-                return game_object.guess_color
+                return game_object.guest_color
             raise
         except:
             return Response('invalid session', status=401)
@@ -77,8 +77,10 @@ def serve(game_object, host='0.0.0.0', port=8799):
         try:
             if request.args['session'] == CURRENT_SESSION:
                 # put the command on the game object
-                game_object.guess_ran = game_object.run_command(request.args['cmd'])
-                return game_object.guess_ran
+                if request.args['cmd'].strip().lower() == 'back':
+                    return Response('command `back` is disabled for guest', status=401)
+                game_object.guest_ran = game_object.run_command(request.args['cmd'])
+                return game_object.guest_ran
             raise ValueError()
         except:
             return Response('invalid session', status=401)

@@ -487,7 +487,7 @@ OPTIONS
     --online: serve a online game
     --online --host=[host]: set host of online game
     --online --port=[port]: set port of online game
-    --online --guess-color=[color]: color of guess player (black or white)
+    --online --guest-color=[color]: color of guest player (black or white)
     --connect [host]:[port]: connect to a online game
     --connect --name=[name]: set your name white joining to a game
 
@@ -580,6 +580,8 @@ GAME
         >>> back
 
         This is useful if you insert a wrong command or move wrong.
+        (This command will be disabled for guest in online mode)
+
         Replaying a saved game
 
         If you played a game and it is saved, you can play that!
@@ -603,9 +605,9 @@ GAME
 
         But you can play with your friend with two computers (on local network).
 
-        Means one player will be Server and othe player will be Guess.
+        Means one player will be Server and othe player will be guest.
 
-        Game will be handled by Server computer. and guess will be connected to server and play.
+        Game will be handled by Server computer. and guest will be connected to server and play.
 
         To serve a game, run this command:
 
@@ -615,20 +617,20 @@ GAME
         # Example
         $ tchess --online --port=5000 --host=0.0.0.0
 
-        then, the guess player can join the game by running this command:
+        then, the guest player can join the game by running this command:
 
         $ tchess --connect <host>:<port>
         # Example
         $ tchess --connect 192.168.1.2:5000
 
-        Also guess can determine the name:
+        Also guest can determine the name:
 
-        $ tchess --connect 192.168.1.2:5000 --name="Guess name"
+        $ tchess --connect 192.168.1.2:5000 --name="guest name"
 
         Also server player can use more options:
 
-        # set color of guess player (default is black)
-        $ tchess --online --guess-color=white
+        # set color of guest player (default is black)
+        $ tchess --online --guest-color=white
 '''.strip())
 
 def load_game_from_file(path: str):
@@ -681,7 +683,7 @@ def online_connect(target, options=[], arguments=[]):
         try:
             my_color = requests.get(target + '/me', {'session': session_id}).text.strip()
         except:
-            print('ERROR: error while getting guess color', file=sys.stderr)
+            print('ERROR: error while getting guest color', file=sys.stderr)
             sys.exit(1)
     except:
         print('ERROR: cannot make http connection to the target', file=sys.stderr)
@@ -816,17 +818,17 @@ def run(args=[]):
     last_message = ''
 
     is_online = False
-    game.guess_color = 'black'
+    game.guest_color = 'black'
     if '--online' in options:
         for option in options:
-            if option.startswith('--guess-color='):
-                game.guess_color = option.split('=', 1)[1].lower()
-                if game.guess_color != 'white':
-                    game.guess_color = 'black'
+            if option.startswith('--guest-color='):
+                game.guest_color = option.split('=', 1)[1].lower()
+                if game.guest_color != 'white':
+                    game.guest_color = 'black'
         is_online = True
-        print('Server is served, waiting for guess...')
-        game.guess_ran = False
-        game.guess_connected = False
+        print('Server is served, waiting for guest...')
+        game.guest_ran = False
+        game.guest_connected = False
         host = '0.0.0.0'
         port = 8799
         for option in options:
@@ -842,7 +844,7 @@ def run(args=[]):
         server_thread.start()
 
         # wait for connection
-        while not game.guess_connected:
+        while not game.guest_connected:
             pass
 
     while True:
@@ -886,12 +888,12 @@ def run(args=[]):
                 sys.exit()
             log_counter += 1
         else:
-            if is_online and game.turn == game.guess_color:
-                print('Waiting for guess command...')
-                while not game.guess_ran:
+            if is_online and game.turn == game.guest_color:
+                print('Waiting for guest command...')
+                while not game.guest_ran:
                     pass
-                print(game.guess_ran)
-                game.guess_ran = False
+                print(game.guest_ran)
+                game.guest_ran = False
                 continue
             else:
                 command = input(ansi_color + game.turn + Ansi.RESET + ' Turn >>> ').strip().lower()
