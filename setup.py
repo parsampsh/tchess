@@ -28,6 +28,6 @@ setuptools.setup(
     install_requires=[
         'Flask >= 1.1',
         'requests >= 2.0',
-        'karafs >= 0.1',
+        'karafs >= 0.1.1',
     ]
 )

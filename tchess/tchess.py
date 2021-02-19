@@ -9,6 +9,7 @@ import copy
 import time
 import threading
 import requests
+import karafs
 
 try:
     from . import moves
@@ -19,12 +20,6 @@ try:
     from . import server
 except ImportError:
     import server
-
-# TODO : remove try-except
-try:
-    import karafs
-except:
-    pass
 
 VERSION = '0.0.20'
 
@@ -130,15 +125,8 @@ class Game:
         self.selected_cell = None
 
         # the player names
-        self.white_player = 'White'
-        self.black_player = 'Black'
-
-        # TODO : remove try-except
-        try:
-            self.white_player = karafs.gen_str('en')
-            self.black_player = karafs.gen_str('en')
-        except:
-            pass
+        self.white_player = karafs.gen_str('en')
+        self.black_player = karafs.gen_str('en')
 
         # game status
         self.is_end = False
