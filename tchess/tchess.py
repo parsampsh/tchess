@@ -16,14 +16,15 @@ except ImportError:
     import moves
 
 try:
-    import karafs
-except:
-    pass
-
-try:
     from . import server
 except ImportError:
     import server
+
+# TODO : remove try-except
+try:
+    import karafs
+except:
+    pass
 
 VERSION = '0.0.18'
 
@@ -132,6 +133,7 @@ class Game:
         self.white_player = 'White'
         self.black_player = 'Black'
 
+        # TODO : remove try-except
         try:
             self.white_player = karafs.gen_str('en')
             self.black_player = karafs.gen_str('en')
