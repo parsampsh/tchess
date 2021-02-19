@@ -713,6 +713,10 @@ def run(args=[]):
 
     game_file_name = 'game.tchess'
 
+    # disable ansi for windows
+    if os.name == 'nt':
+        args.append('--no-ansi')
+
     # parse the arguments
     options = [arg for arg in args if arg.startswith('-')]
     arguments = [arg for arg in args if not arg.startswith('-')]
