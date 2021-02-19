@@ -26,7 +26,7 @@ try:
 except:
     pass
 
-VERSION = '0.0.18'
+VERSION = '0.0.19'
 
 class Ansi:
     """ The terminal ansi chars """
