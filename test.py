@@ -3,14 +3,13 @@
 """ Runs the tchess tests """
 
 import os
+import sys
 import subprocess
 from tchess import Game, Piece, load_game_from_file
 
 Game.IS_TEST = True
 
-PY_EXE = 'python3'
-if os.name == 'nt':
-    PY_EXE = 'python'
+PY_EXE = sys.executable
 
 def str_contains_all(string, items):
     """ Gets a string and a list of string and checks all of list items are in string """
