@@ -28,4 +28,4 @@ jobs:
         make dep
         python -m twine upload dist/* -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
 
-    name: ${{ matrix.os }} Python ${{ matrix.python }}
+    name: Publish
