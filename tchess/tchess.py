@@ -874,7 +874,10 @@ def run(args=[]):
             print(Ansi.GREEN + 'Checkmate!' + Ansi.RESET + (' ' * (len(Game.ROW_SEPARATOR)-10)))
             color = Ansi.CYAN if game.winner == 'white' else Ansi.RED
             print(color + game.winner + Ansi.GREEN + ' won!' + Ansi.RESET + (' ' * (len(Game.ROW_SEPARATOR)-10)))
-            next_step = input('Press enter to continnue or type `back`: ').strip().lower()
+            if is_play:
+                next_step = ''
+            else:
+                next_step = input('Press enter to continnue or type `back`: ').strip().lower()
             if next_step == 'back':
                 game.is_end = False
                 game.winner = None
