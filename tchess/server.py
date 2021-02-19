@@ -44,7 +44,7 @@ def serve(game_object, host='0.0.0.0', port=8799):
 
     @app.route('/me')
     def me():
-        # return name of guest
+        # return color of guest
         if CURRENT_SESSION is None:
             return Response('Please start a session first', status=401)
 
