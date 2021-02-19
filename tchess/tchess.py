@@ -102,8 +102,6 @@ class Piece:
             return result
         if dst in result:
             return True
-        if self.name == Piece.PAWN:
-            return False
         return False
 
 class Game:
