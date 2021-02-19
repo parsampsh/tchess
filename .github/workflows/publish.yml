@@ -23,7 +23,7 @@ jobs:
     - name: Running Tests
       run: |
         python test.py
-    - name: Publish:
+    - name: Publish
       run: |
         make dep
         python -m twine upload dist/* -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
