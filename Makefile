@@ -20,3 +20,13 @@ clean:
 dep: clean
 	@$(PY) setup.py sdist bdist_wheel
 	#@$(PY) -m twine upload dist/*
+
+todo:
+	@for f in $(shell find tchess bin -type f -name '*.py') test.py bin/tchess; do \
+		TODO=$$(cat $$f | grep 'TODO'); \
+		if [ "$$TODO" != "" ]; then \
+			echo $$f:; \
+			cat $$f | grep 'TODO'; \
+			echo ---------------; \
+		fi; \
+	done; \

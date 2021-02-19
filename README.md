@@ -283,6 +283,6 @@ $ ./bin/generate-man-page.py
 To see project todos, run:
 
 ```bash
-$ ./todo.sh
+$ make todo
 ```
 
