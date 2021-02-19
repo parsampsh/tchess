@@ -6,7 +6,7 @@ from flask import Flask, request, Response
 
 CURRENT_SESSION = None
 
-def serve(game_object, host='0.0.0.0', port=8799):
+def serve(game, host='0.0.0.0', port=8799):
     """ Serve the server """
     app = Flask(__name__)
 
@@ -24,10 +24,10 @@ def serve(game_object, host='0.0.0.0', port=8799):
         # get user confirmation
         try:
             guest_name = request.args['name']
-            if game_object.guest_color == 'white':
-                game_object.white_player = guest_name
+            if game.guest_color == 'white':
+                game.white_player = guest_name
             else:
-                game_object.black_player = guest_name
+                game.black_player = guest_name
         except:
             guest_name = 'Unknow'
         if input(
@@ -36,7 +36,7 @@ def serve(game_object, host='0.0.0.0', port=8799):
             print('Rejected.')
             return Response('Rejected', status=403)
 
-        game_object.guest_connected = True
+        game.guest_connected = True
 
         # start the session
         CURRENT_SESSION = str(uuid.uuid4())
@@ -51,7 +51,7 @@ def serve(game_object, host='0.0.0.0', port=8799):
         try:
             if request.args['session'] == CURRENT_SESSION:
                 # render the game
-                return game_object.guest_color
+                return game.guest_color
             raise
         except:
             return Response('invalid session', status=401)
@@ -64,11 +64,11 @@ def serve(game_object, host='0.0.0.0', port=8799):
         try:
             if request.args['session'] == CURRENT_SESSION:
                 # render the game and turn
-                output = game_object.turn + '\n' + game_object.render()
-                if game_object.is_end:
+                output = game.turn + '\n' + game.render()
+                if game.is_end:
                     # game is finished
-                    output += '\n' + ('Checkmate!' + (' ' * (len(game_object.ROW_SEPARATOR)-10)))
-                    output += '\n' + (game_object.winner + ' won!' + (' ' * (len(game_object.ROW_SEPARATOR)-10)))
+                    output += '\n' + ('Checkmate!' + (' ' * (len(game.ROW_SEPARATOR)-10)))
+                    output += '\n' + (game.winner + ' won!' + (' ' * (len(game.ROW_SEPARATOR)-10)))
                 return output
             raise
         except:
@@ -84,8 +84,8 @@ def serve(game_object, host='0.0.0.0', port=8799):
                 # put the command on the game object
                 if request.args['cmd'].strip().lower() == 'back':
                     return Response('command `back` is disabled for guest', status=401)
-                game_object.guest_ran = game_object.run_command(request.args['cmd'])
-                return game_object.guest_ran
+                game.guest_ran = game.run_command(request.args['cmd'])
+                return game.guest_ran
             raise ValueError()
         except:
             return Response('invalid session', status=401)
