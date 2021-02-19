@@ -19,7 +19,7 @@ jobs:
     - name: Install requirements
       run: |
         python -m pip install -r requirements.txt
-        python -m pip install twine
+        python -m pip install twine wheel
     - name: Running Tests
       run: |
         python test.py
