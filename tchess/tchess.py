@@ -708,6 +708,8 @@ def online_connect(target, options=[], arguments=[]):
             turn = render[0]
             render = render[1]
             print(render)
+            if 'Checkmate' in render:
+                return
             if turn == my_color:
                 command = input(turn + ' Turn >>> ').strip()
                 if command == '':

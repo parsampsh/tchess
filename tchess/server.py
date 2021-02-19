@@ -64,7 +64,12 @@ def serve(game_object, host='0.0.0.0', port=8799):
         try:
             if request.args['session'] == CURRENT_SESSION:
                 # render the game and turn
-                return game_object.turn + '\n' + game_object.render()
+                output = game_object.turn + '\n' + game_object.render()
+                if game_object.is_end:
+                    # game is finished
+                    output += '\n' + ('Checkmate!' + (' ' * (len(game_object.ROW_SEPARATOR)-10)))
+                    output += '\n' + (game_object.winner + ' won!' + (' ' * (len(game_object.ROW_SEPARATOR)-10)))
+                return output
             raise
         except:
             return Response('invalid session', status=401)
