@@ -394,8 +394,8 @@ class Game:
         output = ''
 
         # render the player names
-        white_player = 'B. ' + self.white_player + (' (Check!)' if 'white' == self.current_check else '')
-        black_player = 'W. ' + self.black_player + (' (Check!)' if 'black' == self.current_check else '')
+        white_player = 'W. ' + self.white_player + (' (Check!)' if 'white' == self.current_check else '')
+        black_player = 'B. ' + self.black_player + (' (Check!)' if 'black' == self.current_check else '')
         white_space_len = (len(self.ROW_SEPARATOR) - (len(white_player)+len(black_player))) - 2
         white_space_len = int(white_space_len/2)
         player_names = Ansi.CYAN + white_player + Ansi.RESET + (' ' * white_space_len) + 'Vs' + (' ' * white_space_len) + Ansi.RED + black_player + Ansi.RESET
