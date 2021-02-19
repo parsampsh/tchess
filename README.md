@@ -279,3 +279,10 @@ $ ./bin/generate-man-page.py
 ```
 
 (This is possible ONLY on Unix systems).
+
+To see project todos, run:
+
+```bash
+$ ./todo.sh
+```
+

@@ -345,6 +345,11 @@ def test_checkmate_and_example():
     assert game.is_end
     assert game.winner == 'white'
 
+def test_online_playing_system_works():
+    """ Online playing system works """
+    # TODO : write this test
+    pass
+
 TESTS = [
     test_default_state_is_valid,
     test_turn_changer_works,
@@ -359,6 +364,7 @@ TESTS = [
     test_bishop_move_validation_works,
     test_command_back_works,
     test_checkmate_and_example,
+    test_online_playing_system_works,
 ]
 
 # running the tests
