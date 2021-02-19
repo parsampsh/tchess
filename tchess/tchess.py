@@ -13,12 +13,9 @@ import karafs
 
 try:
     from . import moves
-except ImportError:
-    import moves
-
-try:
     from . import server
 except ImportError:
+    import moves
     import server
 
 VERSION = '0.0.20'
