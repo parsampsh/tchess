@@ -359,7 +359,11 @@ def test_online_playing_system_works():
         assert game.board[1][0] is None
         assert game.board[6][0] is None
         assert game.board[1][1] is None
-        print('AAA')
+
+    def second_asserts(game):
+        assert game.logs == ['mv 2.1 3.1', 'mv 7.1 6.1']
+        assert game.board[6][0] is None
+        assert game.board[5][0] is not None
 
     tests = [
         [[[
@@ -369,13 +373,21 @@ def test_online_playing_system_works():
         'mv 2.2 3.2',
         'q',
         ], '--online --port=8799 --host=127.0.0.1'], [[
-
         'mv 7.1 6.1',
         's 1.1',
         'back',
         'gfdhg',
         'mv 6.1 5.1',
         ], '--connect 127.0.0.1:8799 --name=the-guest'], first_asserts],
+
+        [[[
+        'y',
+        'mv 7.1 6.1',
+        'q',
+        ], '--online --port=8799 --host=127.0.0.1 --guest-color=white'], [[
+        'mv 2.1 3.1',
+        'mv 2.2 3.2',
+        ], '--connect 127.0.0.1:8799'], second_asserts],
     ]
 
     for test in tests:
@@ -386,7 +398,7 @@ def test_online_playing_system_works():
         os.system('printf "' + '\\n'.join(test[0][0]) + '\\n" | ' + PY_EXE + ' tchess ' + test[0][1] + ' server.tchess >/dev/null 2>&1 &')
 
         time.sleep(2)
-    
+
         os.system('printf "' + '\\n'.join(test[1][0]) + '\\n" | ' + PY_EXE + ' tchess ' + test[1][1] + ' >/dev/null 2>&1')
 
         game = load_game_from_file('server.tchess')
