@@ -236,6 +236,8 @@ $ man -l man/tchess.1
 ```
 
 ## Development
+
+#### Get started
 To start development environment:
 
 ```bash
@@ -244,6 +246,7 @@ $ source venv/bin/activate
 $ pip3 install -r requirements.txt
 ```
 
+#### Tests
 For running tests:
 
 ```bash
@@ -266,12 +269,14 @@ TESTS = [
 ]
 ```
 
+#### Pylint
 For using **pylint** to check code quality, you can use make:
 
 ```bash
 $ make pylint
 ```
 
+#### Manpage
 For generating manual page(man) in the `man/tchess.1`, you can run:
 
 ```bash
@@ -280,9 +285,32 @@ $ ./bin/generate-man-page.py
 
 (This is possible ONLY on Unix systems).
 
+#### TODO
 To see project todos, run:
 
 ```bash
 $ make todo
 ```
 
+#### Releasing
+To release a new version automaticaly:
+
+```bash
+$ ./bin/release.py <new-version>
+$ ./bin/release.py 1.0
+# OR
+$ ./bin/release.py micro # bump a micro
+$ ./bin/release.py minor # bump a minor
+$ ./bin/release.py major # bump a major
+$ ./bin/release.py # micro by default
+```
+
+The above commands will change the version. But they do not commit changes and create the tag.
+To create tag and commit, use `--commit` option:
+
+```bash
+$ ./bin/release.py --commit
+$ git push
+```
+
+After push, new release will be published into pypi by github workflows.
