@@ -12,7 +12,7 @@ from tchess import Game, Piece, load_game_from_file
 
 Game.IS_TEST = True
 
-PY_EXE = sys.executable
+PY_EXE = repr(sys.executable)
 
 def str_contains_all(string, items):
     """ Gets a string and a list of string and checks all of list items are in string """
