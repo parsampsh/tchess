@@ -349,55 +349,51 @@ def test_checkmate_and_example():
 
 def test_online_playing_system_works():
     """ Online playing system works """
-    # TODO : fix problems in online system test
-    if not '--server' in sys.argv:
+    if os.name == 'nt' or '--no-server' in sys.argv:
         print('Igonred...', end=' ', flush=True)
         return
 
-    # remove game file
-    if os.path.isfile('server.tchess'):
+    def first_asserts(game):
+        assert game.black_player == 'the-guest'
+        assert game.logs == ['mv 2.1 3.1', 'mv 7.1 6.1', 'mv 2.2 3.2']
+        assert game.board[1][0] is None
+        assert game.board[6][0] is None
+        assert game.board[1][1] is None
+        print('AAA')
+
+    tests = [
+        [[[
+        'y',
+        'mv 2.1 3.1',
+        's 7.1',
+        'mv 2.2 3.2',
+        'q',
+        ], '--online --port=8799 --host=127.0.0.1'], [[
+
+        'mv 7.1 6.1',
+        's 1.1',
+        'back',
+        'gfdhg',
+        'mv 6.1 5.1',
+        ], '--connect 127.0.0.1:8799 --name=the-guest'], first_asserts],
+    ]
+
+    for test in tests:
+        # remove game file
+        if os.path.isfile('server.tchess'):
+            os.remove('server.tchess')
+
+        os.system('printf "' + '\\n'.join(test[0][0]) + '\\n" | ' + PY_EXE + ' tchess ' + test[0][1] + ' server.tchess >/dev/null 2>&1 &')
+
+        time.sleep(2)
+    
+        os.system('printf "' + '\\n'.join(test[1][0]) + '\\n" | ' + PY_EXE + ' tchess ' + test[1][1] + ' >/dev/null 2>&1')
+
+        game = load_game_from_file('server.tchess')
+
+        test[2](game)
+
         os.remove('server.tchess')
-
-    server_p = subprocess.Popen(
-        PY_EXE + ' tchess --online --port=8799 --host=127.0.0.1 server.tchess',
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        stdin=subprocess.PIPE,
-    )
-    server_thread = threading.Thread(target=server_p.communicate, args=('y\nmv 2.1 3.1\ns 7.1\nmv 2.2 3.2\nq\n'.encode(),))
-    server_thread.daemon = True
-    server_thread.start()
-
-    while not server_thread.is_alive():
-        pass
-
-    client_p = subprocess.Popen(
-        PY_EXE + ' tchess --connect 127.0.0.1:8799 --name=the-guest',
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        stdin=subprocess.PIPE,
-    )
-    client_input = 'mv 7.1 6.1\ns 1.1\nback\ngfdhg\nmv 6.1 5.1\n'
-    client_thread = threading.Thread(target=client_p.communicate, args=(client_input.encode(),))
-    client_thread.daemon = True
-    client_thread.start()
-
-    while server_thread.is_alive():
-        pass
-
-    client_p.kill()
-
-    game = load_game_from_file('server.tchess')
-
-    assert game.black_player == 'the-guest'
-    assert game.logs == ['mv 2.1 3.1', 'mv 7.1 6.1', 'mv 2.2 3.2']
-    assert game.board[1][0] is None
-    assert game.board[6][0] is None
-    assert game.board[1][1] is None
-
-    os.remove('server.tchess')
 
 TESTS = [
     test_default_state_is_valid,
