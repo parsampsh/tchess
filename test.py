@@ -7,6 +7,7 @@ import sys
 import subprocess
 import threading
 import time
+import requests
 from tchess import Game, Piece, load_game_from_file
 
 Game.IS_TEST = True
@@ -406,6 +407,85 @@ def test_online_playing_system_works():
         test[2](game)
 
         os.remove('server.tchess')
+
+def test_server_http_api_works():
+    """ Game server http APIs working correct """
+    # TODO : complete test `Game server http APIs working correct`
+    if os.name == 'nt' or '--no-server' in sys.argv:
+        print('Igonred...', end=' ', flush=True)
+        return
+
+    # remove game file
+    if os.path.isfile('server.tchess'):
+        os.remove('server.tchess')
+
+    os.system('printf "y\\nmv 2.1 3.1\\nq\\n" | ' + PY_EXE + ' tchess --online --host=127.0.0.1 --port=8799 server.tchess >/dev/null 2>&1 &')
+
+    time.sleep(2)
+
+    r = requests.get('http://127.0.0.1:8799/me')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+    r = requests.get('http://127.0.0.1:8799/me?session=foo')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+
+    r = requests.get('http://127.0.0.1:8799/render')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+    r = requests.get('http://127.0.0.1:8799/render?session=foo')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+
+    r = requests.get('http://127.0.0.1:8799/command')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+    r = requests.get('http://127.0.0.1:8799/command?session=foo')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+
+    r = requests.get('http://127.0.0.1:8799/connect')
+    assert r.status_code == 200
+    session_id = r.text.strip()
+
+    r = requests.get('http://127.0.0.1:8799/connect')
+    assert r.status_code == 401
+    assert str_contains_all(r.text, ['started', 'currently'])
+
+    r = requests.get('http://127.0.0.1:8799/me')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+    r = requests.get('http://127.0.0.1:8799/me?session=foo')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+    r = requests.get('http://127.0.0.1:8799/me?session=' + session_id)
+    assert r.status_code == 200
+    assert str_contains_all(r.text, ['black'])
+
+    r = requests.get('http://127.0.0.1:8799/render')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+    r = requests.get('http://127.0.0.1:8799/render?session=foo')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+    r = requests.get('http://127.0.0.1:8799/render?session=' + session_id)
+    assert r.status_code == 200
+
+    r = requests.get('http://127.0.0.1:8799/command')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+    r = requests.get('http://127.0.0.1:8799/command?session=foo')
+    assert r.status_code == 403
+    assert str_contains_all(r.text, ['invalid', 'session'])
+    r = requests.get('http://127.0.0.1:8799/command?session=' + session_id)
+    assert r.status_code == 401
+    assert str_contains_all(r.text, ['missing', 'cmd'])
+    r = requests.get('http://127.0.0.1:8799/command?cmd=test&session=' + session_id)
+    assert r.status_code == 200
+    r = requests.get('http://127.0.0.1:8799/command?cmd=mv 7.1 6.1&session=' + session_id)
+    assert r.status_code == 200
+
+    os.remove('server.tchess')
 
 TESTS = [
     test_default_state_is_valid,
