@@ -12,7 +12,7 @@ from tchess import Game, Piece, load_game_from_file
 
 Game.IS_TEST = True
 
-PY_EXE = repr(sys.executable)
+PY_EXE = sys.executable
 
 def str_contains_all(string, items):
     """ Gets a string and a list of string and checks all of list items are in string """
@@ -481,6 +481,9 @@ def test_server_http_api_works():
     assert str_contains_all(r.text, ['missing', 'cmd'])
     r = requests.get('http://127.0.0.1:8799/command?cmd=test&session=' + session_id)
     assert r.status_code == 200
+    r = requests.get('http://127.0.0.1:8799/command?cmd=back&session=' + session_id)
+    assert r.status_code == 401
+    assert str_contains_all(r.text, ['command', 'disabled'])
     r = requests.get('http://127.0.0.1:8799/command?cmd=mv 7.1 6.1&session=' + session_id)
     assert r.status_code == 200
 
