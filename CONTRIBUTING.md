@@ -4,10 +4,12 @@
 To start development environment:
 
 ```bash
-$ virtualenv venv -p python3
+$ virtualenv venv
 $ source venv/bin/activate
-$ pip3 install -r requirements.txt
+$ pip install -r requirements.txt
 ```
+
+(Use python3)
 
 #### Tests
 For running tests:
@@ -16,6 +18,8 @@ For running tests:
 $ python3 test.py
 # OR
 $ ./test.py
+# OR
+$ make test
 ```
 
 For adding test, write a function in `test.py` and add the function to the `TESTS` list in `test.py`:
@@ -44,6 +48,8 @@ For generating manual page(man) in the `man/tchess.1`, you can run:
 
 ```bash
 $ ./bin/generate-man-page.py
+# OR
+$ make manpage
 ```
 
 (This is possible ONLY on Unix systems).
@@ -59,13 +65,13 @@ $ make todo
 To release a new version automaticaly:
 
 ```bash
-$ ./bin/release.py <new-version>
+$ python ./bin/release.py <new-version>
 $ ./bin/release.py 1.0
 # OR
-$ ./bin/release.py micro # bump a micro
-$ ./bin/release.py minor # bump a minor
-$ ./bin/release.py major # bump a major
-$ ./bin/release.py # micro by default
+$ python ./bin/release.py micro # bump a micro
+$ python ./bin/release.py minor # bump a minor
+$ python ./bin/release.py major # bump a major
+$ python ./bin/release.py # micro by default
 ```
 
 The above commands will change the version. But they do not commit changes and create the tag.
