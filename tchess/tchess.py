@@ -27,7 +27,7 @@ class Ansi:
     RED = '\033[1;31m'
     RESET = '\033[0m'
     GRAY = '\033[37m'
-    CYAN = '\033[96m'
+    CYAN = '\033[1;96m'
 
     @staticmethod
     def disable():
