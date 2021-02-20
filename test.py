@@ -410,7 +410,6 @@ def test_online_playing_system_works():
 
 def test_server_http_api_works():
     """ Game server http APIs working correct """
-    # TODO : complete test `Game server http APIs working correct`
     if os.name == 'nt' or '--no-server' in sys.argv:
         print('Igonred...', end=' ', flush=True)
         return
@@ -421,7 +420,7 @@ def test_server_http_api_works():
 
     os.system('printf "y\\nmv 2.1 3.1\\nq\\n" | ' + PY_EXE + ' tchess --online --host=127.0.0.1 --port=8799 server.tchess >/dev/null 2>&1 &')
 
-    time.sleep(2)
+    time.sleep(4)
 
     r = requests.get('http://127.0.0.1:8799/me')
     assert r.status_code == 403
@@ -501,6 +500,7 @@ TESTS = [
     test_bishop_move_validation_works,
     test_command_back_works,
     test_checkmate_and_example,
+    test_server_http_api_works,
     test_online_playing_system_works,
 ]
 
