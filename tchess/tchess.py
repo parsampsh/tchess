@@ -685,14 +685,17 @@ def online_connect(target, options=[], arguments=[]):
         print('ERROR: cannot make http connection to the target', file=sys.stderr)
         sys.exit(1)
 
+    retry_counter = 0
+
     while True:
-        print('\033[H', end='')
         try:
             render = requests.get(target + '/render', {'session': session_id}).text
             render = render.split('\n', 1)
             turn = render[0]
             render = render[1]
-            print(render)
+            print('\033[H', end='', flush=True)
+            print(render, flush=True)
+            retry_counter = 0
             if 'Checkmate' in render:
                 return
             if turn == my_color:
@@ -700,12 +703,16 @@ def online_connect(target, options=[], arguments=[]):
                 if command == '':
                     continue
                 cmd_res = requests.get(target + '/command', {'session': session_id, 'cmd': command})
-                print(cmd_res.text)
+                print(cmd_res.text, flush=True)
         except KeyboardInterrupt:
             break
         except:
-            print('WARNING: unable to connect to server. retrying...', file=sys.stderr)
-            continue
+            if retry_counter > 10:
+                # do not retry again
+                print('ERROR: disconnected.', file=sys.stderr, flush=True)
+                return
+            print('WARNING: unable to connect to server. retrying...', file=sys.stderr, flush=True)
+            retry_counter += 1
         time.sleep(0.5)
 
 def run(args=[]):
