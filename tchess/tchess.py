@@ -215,7 +215,7 @@ class Game:
         self.current_check = color
         self.beep()
 
-    def move(self, src, dst):
+    def move(self, src, dst, convert_pawn_to=None):
         """ Moves src to dst """
         self.beep()
         dst_p = copy.deepcopy(self.board[dst[0]][dst[1]])
@@ -229,6 +229,30 @@ class Game:
                 # killing self!
                 return False, 'Error: You cannot kill your self!'
 
+        if dst[0] in (0, 7) and src_p.name == Piece.PAWN:
+            # this is a pawn and is moved to end of the board
+            # player can select a new piece
+            # first, check is any dead item available
+            dead_items = self.get_dead_items()[src_p.color]
+            allowed_new_items = []
+            allowed_items = (Piece.ROCK, Piece.KNIGHT, Piece.BISHOP, Piece)
+            for item in allowed_items:
+                if item in dead_items.keys():
+                    allowed_new_items.append(item)
+            if allowed_new_items:
+                selected_item = None
+                if len(allowed_new_items) == 1:
+                    selected_item = allowed_new_items[0]
+                else:
+                    err_msg = 'Error: please determine new piece type to convert pawn to: `mv x y > {' + ', '.join(allowed_new_items) + '}`'
+                    if convert_pawn_to is None:
+                        return False, err_msg
+                    elif convert_pawn_to not in convert_pawn_to:
+                        return False, err_msg
+                    else:
+                        selected_item = convert_pawn_to
+                src_p = Piece(selected_item, src_p.color)
+
         self.board[src[0]][src[1]] = None
 
         self.board[dst[0]][dst[1]] = src_p
@@ -239,7 +263,10 @@ class Game:
         """ Gets a command as string and runs that on the game. Returns result message as string """
         self.beep()
 
-        cmd_parts = cmd.split()
+        cmd_parts = cmd.split('>', 1)[0].split()
+        convert_to = None
+        if len(cmd.split('>', 1)) > 1:
+            convert_to = cmd.split('>', 1)[1].strip()
 
         self.highlight_cells = []
         self.selected_cell = None
@@ -326,7 +353,7 @@ class Game:
                     return 'Error: source and target locations are not different!'
                 if self.board[src[0]][src[1]].color != self.turn:
                     return 'Error: its ' + self.turn + ' turn, you should move ' + self.turn + ' pieces!'
-                result = self.move(src, dst)
+                result = self.move(src, dst, convert_to)
                 if not result[0]:
                     return result[1]
             else:

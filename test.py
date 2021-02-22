@@ -348,6 +348,72 @@ def test_checkmate_and_example():
     assert game.is_end
     assert game.winner == 'white'
 
+def test_pawn_convertion():
+    """ Pawn convertion system works """
+    commands = [
+        'mv 2.1 4.1',
+        'mv 7.2 5.2',
+        'mv 1.1 3.1',
+        'mv 5.2 4.1',
+        'mv 3.1 3.2',
+        'mv 4.1 3.1',
+        'mv 3.2 4.2',
+        'mv 3.1 2.1',
+        'mv 4.2 5.2',
+        'mv 2.1 1.1'
+    ]
+
+    game = Game()
+
+    for cmd in commands:
+        game.run_command(cmd)
+
+    assert game.board[0][0].name == Piece.PAWN
+    assert game.board[0][0].color == 'black'
+
+    commands = [
+        'mv 2.1 4.1',
+        'mv 7.2 5.2',
+        'mv 1.1 3.1',
+        'mv 5.2 4.1',
+        'mv 3.1 3.2',
+        'mv 4.1 3.1',
+        'mv 3.2 4.2',
+        'mv 3.1 2.1',
+        'mv 4.2 8.2',
+        'mv 2.1 1.1'
+    ]
+
+    game = Game()
+
+    for cmd in commands:
+        game.run_command(cmd)
+
+    assert game.board[0][0].name == Piece.KNIGHT
+    assert game.board[0][0].color == 'black'
+
+    commands = [
+        'mv 2.1 4.1',
+        'mv 7.2 5.2',
+        'mv 1.1 3.1',
+        'mv 5.2 4.1',
+        'mv 3.1 3.2',
+        'mv 4.1 3.1',
+        'mv 3.2 8.2',
+        'mv 3.1 2.1',
+        'mv 8.2 8.1',
+        'mv 2.1 1.1',
+        'mv 2.1 1.1 > rock',
+    ]
+
+    game = Game()
+
+    for cmd in commands:
+        game.run_command(cmd)
+
+    assert game.board[0][0].name == Piece.ROCK
+    assert game.board[0][0].color == 'black'
+
 def test_online_playing_system_works():
     """ Online playing system works """
     if os.name == 'nt' or '--no-server' in sys.argv:
@@ -503,6 +569,7 @@ TESTS = [
     test_bishop_move_validation_works,
     test_command_back_works,
     test_checkmate_and_example,
+    test_pawn_convertion,
     test_server_http_api_works,
     test_online_playing_system_works,
 ]
