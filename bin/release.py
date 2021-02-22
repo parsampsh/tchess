@@ -47,6 +47,7 @@ def release(version, auto_commit=False):
         os.system('git add -A')
         os.system('git commit -m ' + new_version)
         os.system('git tag ' + new_version)
+        os.system(sys.executable + ' tchess -v')
     else:
         os.system('git diff')
 
