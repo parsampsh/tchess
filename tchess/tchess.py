@@ -232,26 +232,14 @@ class Game:
         if dst[0] in (0, 7) and src_p.name == Piece.PAWN:
             # this is a pawn and is moved to end of the board
             # player can select a new piece
-            # first, check is any dead item available
-            dead_items = self.get_dead_items()[src_p.color]
-            allowed_new_items = []
-            allowed_items = (Piece.ROCK, Piece.KNIGHT, Piece.BISHOP, Piece)
-            for item in allowed_items:
-                if item in dead_items.keys():
-                    allowed_new_items.append(item)
-            if allowed_new_items:
-                selected_item = None
-                if len(allowed_new_items) == 1:
-                    selected_item = allowed_new_items[0]
-                else:
-                    err_msg = 'Error: please determine new piece type to convert pawn to: `mv x y > {' + ', '.join(allowed_new_items) + '}`'
-                    if convert_pawn_to is None:
-                        return False, err_msg
-                    elif convert_pawn_to not in convert_pawn_to:
-                        return False, err_msg
-                    else:
-                        selected_item = convert_pawn_to
-                src_p = Piece(selected_item, src_p.color)
+            allowed_items = (Piece.ROCK, Piece.KNIGHT, Piece.BISHOP, Piece.QUEEN)
+            err_msg = 'Error: please determine new piece type to convert pawn to: `mv x y > {' + ', '.join(allowed_items) + '}`'
+            if convert_pawn_to is None:
+                return False, err_msg
+            elif convert_pawn_to not in allowed_items:
+                return False, err_msg
+            else:
+                src_p = Piece(convert_pawn_to, src_p.color)
 
         self.board[src[0]][src[1]] = None
 
