@@ -46,7 +46,7 @@ class Piece:
     QUEEN = 'queen'
     KNIGHT = 'knight'
     BISHOP = 'bishop'
-    ROCK = 'rock'
+    ROOK = 'rook'
 
     ICONS = {
         'pawn': 'pawn',
@@ -54,7 +54,7 @@ class Piece:
         'queen': 'queen',
         'knight': 'knight',
         'bishop': 'bishop',
-        'rock': 'rock',
+        'rook': 'rook',
     }
 
     def __init__(self, name: str, color: str):
@@ -79,10 +79,10 @@ class Piece:
         result = []
         if self.name == Piece.PAWN:
             result = moves.pawn_move(self, game, src)
-        elif self.name == Piece.ROCK:
-            result = moves.rock_move(self, game, src)
+        elif self.name == Piece.ROOK:
+            result = moves.rook_move(self, game, src)
         elif self.name == Piece.QUEEN:
-            result = [*moves.rock_move(self, game, src), *moves.bishop_move(self, game, src)]
+            result = [*moves.rook_move(self, game, src), *moves.bishop_move(self, game, src)]
         elif self.name == Piece.KING:
             result = moves.king_move(self, game, src)
         elif self.name == Piece.KNIGHT:
@@ -151,7 +151,7 @@ class Game:
                 elif i in (0, 7):
                     name = Piece.PAWN
                     if j in (0, 7):
-                        name = Piece.ROCK
+                        name = Piece.ROOK
                     elif j in (0, 3):
                         name = Piece.KING
                     elif j in (3 ,7):
@@ -232,7 +232,7 @@ class Game:
         if dst[0] in (0, 7) and src_p.name == Piece.PAWN:
             # this is a pawn and is moved to end of the board
             # player can select a new piece
-            allowed_items = (Piece.ROCK, Piece.KNIGHT, Piece.BISHOP, Piece.QUEEN)
+            allowed_items = (Piece.ROOK, Piece.KNIGHT, Piece.BISHOP, Piece.QUEEN)
             err_msg = 'Error: please determine new piece type to convert pawn to: `mv x y > {' + ', '.join(allowed_items) + '}`'
             if convert_pawn_to is None:
                 return False, err_msg
@@ -362,7 +362,7 @@ class Game:
         {
             "black": {
                 "pawn": 3, # count
-                "rock": 1
+                "rook": 1
             },
             "white": {
                 # ...
@@ -529,7 +529,7 @@ GAME
         when you run the game, you see something like this:
 
         |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
-        | w-rock    | w-knight  | w-bishop  | w-king    | w-queen   | w-bishop  | w-knight  | w-rock    |
+        | w-rook    | w-knight  | w-bishop  | w-king    | w-queen   | w-bishop  | w-knight  | w-rook    |
         |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
         | w-pawn    | w-pawn    | w-pawn    | w-pawn    | w-pawn    | w-pawn    | w-pawn    | w-pawn    |
         |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
@@ -543,7 +543,7 @@ GAME
         |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
         | b-pawn    | b-pawn    | b-pawn    | b-pawn    | b-pawn    | b-pawn    | b-pawn    | b-pawn    |
         |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
-        | b-rock    | b-knight  | b-bishop  | b-king    | b-queen   | b-bishop  | b-knight  | b-rock    |
+        | b-rook    | b-knight  | b-bishop  | b-king    | b-queen   | b-bishop  | b-knight  | b-rook    |
         |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
                                                                                                         
         white Turn >>>

@@ -77,7 +77,7 @@ when you run the game, you see something like this:
 
 ```
 |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
-| w-rock    | w-knight  | w-bishop  | w-king    | w-queen   | w-bishop  | w-knight  | w-rock    |
+| w-rook    | w-knight  | w-bishop  | w-king    | w-queen   | w-bishop  | w-knight  | w-rook    |
 |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
 | w-pawn    | w-pawn    | w-pawn    | w-pawn    | w-pawn    | w-pawn    | w-pawn    | w-pawn    |
 |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
@@ -91,7 +91,7 @@ when you run the game, you see something like this:
 |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
 | b-pawn    | b-pawn    | b-pawn    | b-pawn    | b-pawn    | b-pawn    | b-pawn    | b-pawn    |
 |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
-| b-rock    | b-knight  | b-bishop  | b-king    | b-queen   | b-bishop  | b-knight  | b-rock    |
+| b-rook    | b-knight  | b-bishop  | b-king    | b-queen   | b-bishop  | b-knight  | b-rook    |
 |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
                                                                                                   
 white Turn >>>

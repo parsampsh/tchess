@@ -49,8 +49,8 @@ def pawn_move(self, game, src):
 
     return result
 
-def rock_move(self, game, src):
-    """ Validates rock move """
+def rook_move(self, game, src):
+    """ Validates rook move """
     x = src[0]
     y = src[1]
     result = []

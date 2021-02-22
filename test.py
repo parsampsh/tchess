@@ -42,7 +42,7 @@ def test_default_state_is_valid():
     for color in colors:
         index = color[1]
         color = color[0]
-        assert game.board[index][0].name == Piece.ROCK
+        assert game.board[index][0].name == Piece.ROOK
         assert game.board[index][7].color == color
 
         assert game.board[index][1].name == Piece.KNIGHT
@@ -197,7 +197,7 @@ def test_pawn_move_validation_works():
     game.run_command('mv 7.2 6.1')
     assert str_contains_all(game.run_command('s 7.1').lower(), ['piece', 'move', 'cannot'])
 
-def test_rock_move_validation_works():
+def test_rook_move_validation_works():
     """ Rock move validation working correct """
     game = Game()
 
@@ -361,7 +361,7 @@ def test_pawn_promotion():
         'mv 3.1 2.1',
         'mv 8.2 8.1',
         'mv 2.1 1.1',
-        'mv 2.1 1.1 > rock',
+        'mv 2.1 1.1 > rook',
     ]
 
     game = Game()
@@ -369,7 +369,7 @@ def test_pawn_promotion():
     for cmd in commands:
         game.run_command(cmd)
 
-    assert game.board[0][0].name == Piece.ROCK
+    assert game.board[0][0].name == Piece.ROOK
     assert game.board[0][0].color == 'black'
 
 def test_online_playing_system_works():
@@ -521,7 +521,7 @@ TESTS = [
     test_game_file_system_works,
     test_command_s_works,
     test_pawn_move_validation_works,
-    test_rock_move_validation_works,
+    test_rook_move_validation_works,
     test_king_move_validation_works,
     test_knight_move_validation_works,
     test_bishop_move_validation_works,
