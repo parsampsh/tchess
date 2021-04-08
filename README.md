@@ -188,7 +188,7 @@ Means both of players should use one computer alongside together.
 
 But you can play with your friend with two computers (on local network).
 
-Means one player will be **Server** and othe player will be **guest**.
+Means one player will be **Server** and other player will be **guest**.
 
 Game will be handled by Server computer. and guest will be connected to server and play.
 
