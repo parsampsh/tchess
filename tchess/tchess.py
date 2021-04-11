@@ -18,7 +18,7 @@ except ImportError:
     import moves
     import server
 
-VERSION = '0.0.30'
+VERSION = '0.0.31'
 
 class Ansi:
     """ The terminal ansi chars """
