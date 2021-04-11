@@ -361,7 +361,7 @@ def test_pawn_promotion():
         'mv 3.1 2.1',
         'mv 8.2 8.1',
         'mv 2.1 1.1',
-        'mv 2.1 1.1 > rook',
+        'mv 2.1 1.1 > ' + Piece.ICONS[Piece.ROOK],
     ]
 
     game = Game()
