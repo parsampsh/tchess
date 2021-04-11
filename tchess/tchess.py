@@ -49,12 +49,12 @@ class Piece:
     ROOK = 'rook'
 
     ICONS = {
-        'pawn': 'pawn',
-        'king': 'king',
-        'queen': 'queen',
-        'knight': 'knight',
-        'bishop': 'bishop',
-        'rook': 'rook',
+        PAWN: 'pawn',
+        KING: 'king',
+        QUEEN: 'queen',
+        KNIGHT: 'knight',
+        BISHOP: 'bishop',
+        ROOK: 'rook',
     }
 
     def __init__(self, name: str, color: str):
