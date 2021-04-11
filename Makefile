@@ -11,7 +11,7 @@ manpage:
 test:
 	@$(PY) test.py
 
-all: manpage test
+all: manpage test todo
 	-@git status
 
 clean:
