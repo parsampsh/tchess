@@ -117,6 +117,13 @@ class Piece:
 
         return Piece.ICONS_MAX_LEN
 
+    @staticmethod
+    def get_id_by_icon(icon):
+        """ Returns Id of the piece by icon """
+        for k in Piece.ICONS:
+            if Piece.ICONS[k] == icon:
+                return k
+
 class Game:
     """ The running game handler """
 
@@ -253,12 +260,14 @@ class Game:
             # this is a pawn and is moved to end of the board
             # player can select a new piece
             allowed_items = (Piece.ROOK, Piece.KNIGHT, Piece.BISHOP, Piece.QUEEN)
-            err_msg = 'Error: please determine new piece type to convert pawn to: `mv x y > {' + ', '.join(allowed_items) + '}`'
+            allowed_items_hr = (Piece.ICONS[Piece.ROOK], Piece.ICONS[Piece.KNIGHT], Piece.ICONS[Piece.BISHOP], Piece.ICONS[Piece.QUEEN])
+            err_msg = 'Error: please determine new piece type to convert pawn to: `mv x y > {' + ', '.join(allowed_items_hr) + '}`'
             if convert_pawn_to is None:
                 return False, err_msg
-            elif convert_pawn_to not in allowed_items:
+            elif convert_pawn_to not in allowed_items_hr:
                 return False, err_msg
             else:
+                convert_pawn_to = Piece.get_id_by_icon(convert_pawn_to)
                 src_p = Piece(convert_pawn_to, src_p.color)
 
         self.board[src[0]][src[1]] = None
@@ -440,7 +449,7 @@ class Game:
         output += (' ' * len(self.ROW_SEPARATOR)) + '\n'
 
         for i in range(1, 9):
-            output += (int(self.CELL_WIDTH/2) * ' ') + str(i) + (' ' * (int(self.CELL_WIDTH/2)+1))
+            output += ((self.CELL_WIDTH+1) * ' ') + str(i)
         output += '\n'
         i = 0
         for row in self.board:
@@ -448,7 +457,7 @@ class Game:
             j = 0
             for column in row:
                 if column is None:
-                    column_str = ' ' + str(i+1) + '-' + str(j+1)
+                    column_str = str(i+1) + '-' + str(j+1)
                     ansi_color = Ansi.GRAY
                     ansi_reset = Ansi.RESET
                 else:
