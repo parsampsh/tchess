@@ -41,13 +41,15 @@ class Ansi:
 class Piece:
     """ Each piece in the chess board """
 
-    PAWN = 'pawn'
-    KING = 'king'
-    QUEEN = 'queen'
-    KNIGHT = 'knight'
-    BISHOP = 'bishop'
-    ROOK = 'rook'
+    # Identifiers for pieces
+    PAWN = 0
+    KING = 1
+    QUEEN = 2
+    KNIGHT = 3
+    BISHOP = 4
+    ROOK = 5
 
+    # Icons for each type of piece for showing in the render output
     ICONS = {
         PAWN: 'pawn',
         KING: 'king',
@@ -100,8 +102,8 @@ class Piece:
 class Game:
     """ The running game handler """
 
-    ROW_SEPARATOR = ('|-----------'*8) + '|\n'
     CELL_WIDTH = 10
+    ROW_SEPARATOR = (('|' + ('-' * (CELL_WIDTH+1))) * 8) + '|\n'
     IS_TEST = False
 
     def __init__(self):
