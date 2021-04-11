@@ -59,6 +59,9 @@ class Piece:
         ROOK: 'rook',
     }
 
+    # used as a cache for `get_longer_icon_len`
+    ICONS_MAX_LEN = None
+
     def __init__(self, name: str, color: str):
         self.name = name
         self.color = color
@@ -99,10 +102,25 @@ class Piece:
             return True
         return False
 
+    @staticmethod
+    def get_longer_icon_len():
+        """ Returns length of the longer item in the icons """
+        # check the cache
+        if Piece.ICONS_MAX_LEN is not None:
+            return Piece.ICONS_MAX_LEN
+
+        mx_len = 0
+        for k in Piece.ICONS:
+            if len(Piece.ICONS[k]) > mx_len:
+                mx_len = len(Piece.ICONS[k])
+        Piece.ICONS_MAX_LEN = mx_len
+
+        return Piece.ICONS_MAX_LEN
+
 class Game:
     """ The running game handler """
 
-    CELL_WIDTH = 10
+    CELL_WIDTH = Piece.get_longer_icon_len() + 4
     ROW_SEPARATOR = (('|' + ('-' * (CELL_WIDTH+1))) * 8) + '|\n'
     IS_TEST = False
 
