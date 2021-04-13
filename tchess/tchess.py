@@ -405,18 +405,19 @@ class Game:
         for i in range(0, 8):
             for j in range(0, 8):
                 if self.board[i][j] is not None:
+                    current_item_name = Piece.ICONS[self.board[i][j].name]
                     try:
-                        result[self.board[i][j].color][self.board[i][j].name] += 1
+                        result[self.board[i][j].color][current_item_name] += 1
                     except:
-                        result[self.board[i][j].color][self.board[i][j].name] = 1
+                        result[self.board[i][j].color][current_item_name] = 1
 
         # now, `result` contains live items.
         # we want dead items
         for team in result:
             for item in result[team]:
-                if item == Piece.PAWN:
+                if item == Piece.ICONS[Piece.PAWN]:
                     result[team][item] = 8 - result[team][item]
-                elif item not in (Piece.QUEEN, Piece.KING):
+                elif item not in (Piece.ICONS[Piece.QUEEN], Piece.ICONS[Piece.KING]):
                     result[team][item] = 2 - result[team][item]
                 else:
                     result[team][item] = 1 - result[team][item]
