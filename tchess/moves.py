@@ -3,6 +3,8 @@
 In this module, we have some functions to validate different pieces moves.
 """
 
+# NOTE: the `self` argument for each function is the `Piece` object
+
 def pawn_move(self, game, src):
     """ Validates pawn move """
     x = src[0]
